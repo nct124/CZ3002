@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Eldmind</string>
+    <string name="list_title">Task Reminders</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="set_button">Set</string>
+    <string name="clear_button">Clear All</string>
+    <string name="action_setttings">Meow</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string-array name="recurringItem">
+        <item>Single</item>
+        <item>Weekly</item>
+    </string-array>
+</resources>
