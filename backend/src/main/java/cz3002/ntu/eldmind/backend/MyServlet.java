@@ -6,6 +6,8 @@
 
 package cz3002.ntu.eldmind.backend;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import javax.servlet.http.*;
@@ -26,6 +28,9 @@ public class MyServlet extends HttpServlet {
         if (name == null) {
             resp.getWriter().println("Please enter a name");
         }
-        resp.getWriter().println("Hello " + name);
+        JSONObject jo = new JSONObject();
+        jo.put("name",name);
+        resp.getWriter().println(jo.toString());
+        //resp.getWriter().println("Hello " + name);
     }
 }
