@@ -5,7 +5,7 @@ when u just started the android studio <br>
 3) open the project and the importing of the project should be ok(let the Gradle to sync)<br>
 <br>
 how to push/pull<br>
-right click on the CZ3002 > git > respository > push/pull<br>
+right click on the CZ3002 > git > respository > push/pull (http://i.imgur.com/kpqYQME.png)<br>
 *green indicates new files<br>
 *blue indicates edited files<br>
 <br>
