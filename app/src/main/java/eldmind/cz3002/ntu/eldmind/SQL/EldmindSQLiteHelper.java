@@ -18,17 +18,26 @@ public class EldmindSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TaskReminder_DUETIME = "dueTime";
     public static final String COLUMN_TaskReminder_RECURRING = "recurring"; //single, daily, weekly, monthly
 
+    public static final String TABLE_Elderly = "Elderly";
+    public static final String COLUMN_Elderly_PhoneNumber = "phoneNumber";
+    public static final String COLUMN_Elderly_FirebaseToken = "firebaseToken";
+
     private static final String DATABASE_NAME = "eldmind.db";
     private static final int DATABASE_VERSION = 1;
 
     // Database creation sql statement
-    private static final String DATABASE_CREATE = "CREATE TABLE "
+    private static final String DATABASE_CREATE_TASKREMINDER = "CREATE TABLE "
             + TABLE_TaskReminder + "( " +
             COLUMN_TaskReminder_ID + " integer primary key autoincrement, " +
             COLUMN_TaskReminder_TITLE + " text not null, "+
             COLUMN_TaskReminder_DESC + " text not null, "+
             COLUMN_TaskReminder_DUETIME + " integer not null, "+
             COLUMN_TaskReminder_RECURRING + " text not null "+
+            ");";
+    private static final String DATABASE_CREATE_PHONE = "CREATE TABLE "
+            + TABLE_Elderly + "( " +
+            COLUMN_Elderly_PhoneNumber + " integer default -1, " +
+            COLUMN_Elderly_FirebaseToken + " text not null "+
             ");";
 
     public EldmindSQLiteHelper(Context context) {
@@ -37,13 +46,15 @@ public class EldmindSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL(DATABASE_CREATE);
+        database.execSQL(DATABASE_CREATE_TASKREMINDER);
+        database.execSQL(DATABASE_CREATE_PHONE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(EldmindSQLiteHelper.class.getName(), "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TaskReminder);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_Elderly);
         onCreate(db);
     }
 }

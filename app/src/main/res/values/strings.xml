@@ -7,6 +7,8 @@
     <string name="clear_button">Clear All</string>
     <string name="action_setttings">Meow</string>
     <string name="title_activity_second">SecondActivity</string>
+    <string name="gae_url">http://eldmind-d78f4.appspot.com/</string>
+    <string name="gae_addelderly_url">/addElderly</string>
     <string-array name="recurringItem">
         <item>Single</item>
         <item>Weekly</item>

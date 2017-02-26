@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "420893219755",
+    "firebase_url": "https://eldmind-d78f4.firebaseio.com",
+    "project_id": "eldmind-d78f4",
+    "storage_bucket": "eldmind-d78f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420893219755:android:6ec72baf486547be",
+        "android_client_info": {
+          "package_name": "eldmind.cz3002.ntu.eldmind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420893219755-85ho8lbhjm9fqgqj65on1t51mfkasp6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF2BAtDcs165iGJG8atSMB3b1YVmvPLKk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
