@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -34,21 +35,25 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
         c1 = Calendar.getInstance();
         c1.set(Calendar.SECOND,0);
 
+
         final TextView timeBox = (TextView)findViewById(R.id.timePicker);
         final TextView dateBox = (TextView)findViewById(R.id.datePicker);
         Button dateSetter = (Button)findViewById(R.id.dateSetter);
         Button timeSetter = (Button)findViewById(R.id.timeSetter);
-        Button setter = (Button)findViewById(R.id.setter);
+        Button setButton = (Button) findViewById(R.id.setButton);
         final EditText titleBox = (EditText)findViewById(R.id.titlebox);
         final EditText descBox = (EditText)findViewById(R.id.desc);
         final android.support.v7.widget.AppCompatSpinner recurringBox = (android.support.v7.widget.AppCompatSpinner)findViewById(R.id.Recurringbox);
+        final String TAG = "ManageTaskReminder";
 
+
+        //TODO Allow updating of existing alarms, remember to delete the existing alarm
         if(getIntent()!=null){
             Intent intent = getIntent();
             if(intent.getAction().equals("edit")){
+
                 titleBox.setText(intent.getStringExtra("title"));
                 descBox.setText(intent.getStringExtra("desc"));
-
                 c1.setTimeInMillis(intent.getLongExtra("dueTime",c1.getTimeInMillis()));
                 SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm");
                 String time = timeformat.format(c1.getTime());
@@ -62,6 +67,14 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 }else if(intent.getStringExtra("recurring").equals("WEEKLY")){
                     recurringBox.setSelection(1);
                 }
+
+                TaskReminder otr = new TaskReminder(); //Store the old task in otr for update later ---------------------------------------------------------------------------------------
+                otr.setTitle(titleBox.getText().toString());
+                otr.setDesc(descBox.getText().toString());
+                otr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
+                otr.setDueTime(c1);
+
+
             }else if(intent.getAction().equals("create")){
 
             }
@@ -100,15 +113,26 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 time.show();
             }
         });
-        setter.setOnClickListener(new View.OnClickListener() {
+        setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 TaskReminder tr = new TaskReminder();
                 tr.setTitle(titleBox.getText().toString());
                 tr.setDesc(descBox.getText().toString());
                 tr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
                 tr.setDueTime(c1);
-                sc.setAlarmForNotification(tr);
+
+                if (getintent.getAction().equals("edit")) {
+                    Log.d(TAG, "onClick: updateTask");
+                    Toast.makeText(mContext, "updateTask: ", Toast.LENGTH_LONG).show();
+                    sc.updateTask(tr, otr);
+                } else {
+                    Log.d(TAG, "onClick: createTask");
+                    Toast.makeText(mContext, "createTAsk: ", Toast.LENGTH_LONG).show();
+                    sc.createTaskAndAlarm(tr); //Also creates the new item
+                }
+
                 String year = Integer.toString(c1.get(Calendar.YEAR));
                 String month = Integer.toString(c1.get(Calendar.MONTH));
                 String dayOfMonth = Integer.toString(c1.get(Calendar.DAY_OF_MONTH));
@@ -116,6 +140,7 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 String minute = Integer.toString(c1.get(Calendar.MINUTE));
                 String time = dayOfMonth+"-"+month+"-"+year+" "+hourOfDay+":"+minute;
                 Toast.makeText(mContext,"alarm set: "+time,Toast.LENGTH_LONG).show();
+                finish();
             }
         });
     }

@@ -21,14 +21,6 @@ public class ScheduleClient {
     private ServiceConnection mConnection;
 
     //==DO NOT TOUCH
-    /**
-     * Call this to connect your activity to your service
-     */
-    public void bindService(){
-        Intent i = new Intent(mContext,ScheduleService.class);
-        mContext.bindService(i,mConnection,Context.BIND_AUTO_CREATE);
-        isBounded = true;
-    }
     public ScheduleClient(Context c){
         mContext = c;
         /**
@@ -52,6 +44,15 @@ public class ScheduleClient {
     }
 
     /**
+     * Call this to connect your activity to your service
+     */
+    public void bindService() {
+        Intent i = new Intent(mContext, ScheduleService.class);
+        mContext.bindService(i, mConnection, Context.BIND_AUTO_CREATE);
+        isBounded = true;
+    }
+
+    /**
      * When you have finished with the service call this method to stop it
      * releasing your connection and resources
      */
@@ -64,7 +65,11 @@ public class ScheduleClient {
     }
     //==DO NOT TOUCH
 
-    public void setAlarmForNotification(TaskReminder tr){
-        mBoundService.setAlarm(tr);
+    public void createTaskAndAlarm(TaskReminder tr) {
+        mBoundService.createTaskAndAlarm(tr);
+    }
+
+    public void updateTask(TaskReminder tr, TaskReminder otr) {
+        mBoundService.updateTask(tr, otr);
     }
 }

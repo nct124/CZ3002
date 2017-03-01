@@ -36,7 +36,7 @@ public class TaskReminderDataSource {
         dbHelper.close();
     }
 
-    public boolean createComment(TaskReminder tr) {
+    public boolean createNewTask(TaskReminder tr) {
         ContentValues values = new ContentValues();
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE, tr.getTitle());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
@@ -46,11 +46,31 @@ public class TaskReminderDataSource {
             long insertId = database.insert(EldmindSQLiteHelper.TABLE_TaskReminder, null, values);
             return true;
         }catch(SQLException ex){
-            Log.d("ALARM","error msg"+ex.getMessage());
+            Log.d("TaskReminderDataSource", "CreateNewTask error msg" + ex.getMessage());
             return false;
         }
 
     }
+
+    public boolean updateTask(TaskReminder tr, TaskReminder otr) {
+        //TODO complete update task
+        ContentValues values = new ContentValues();
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE, tr.getTitle());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, tr.getDueTime().getTimeInMillis());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING, tr.getRecurring());
+
+        try {
+            String selection = EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE + " ==" + otr.getTitle();
+            int count = database.update(EldmindSQLiteHelper.TABLE_TaskReminder, values, selection, null);
+        } catch (SQLException ex) {
+            Log.d("TaskReminderDataSource", "updateTask error msg" + ex.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
     public void deleteTaskReminder(TaskReminder tr) {
         database.delete(EldmindSQLiteHelper.TABLE_TaskReminder,
                         EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE + " = '" + tr.getTitle() + "' AND " +

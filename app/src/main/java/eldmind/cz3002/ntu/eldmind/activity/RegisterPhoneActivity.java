@@ -35,7 +35,7 @@ public class RegisterPhoneActivity extends AppCompatActivity {
                 int phoneNumber = Integer.parseInt(phoneBox.getText().toString());
                 Elderly e = null;
                 List<Elderly> list = datasource.getAllElderly();
-                if(list.size()>0){
+                if (list.size() > 0) { //Get previous firebase token and the existing phonenumber
                     e = list.get(0);
                     updateLocal(e.getFirebaseToken(),phoneNumber);
                     updateServer(e.getFirebaseToken(),phoneNumber);
