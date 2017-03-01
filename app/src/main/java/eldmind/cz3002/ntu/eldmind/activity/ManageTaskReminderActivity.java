@@ -67,14 +67,12 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 }else if(intent.getStringExtra("recurring").equals("WEEKLY")){
                     recurringBox.setSelection(1);
                 }
-
+                /*
                 TaskReminder otr = new TaskReminder(); //Store the old task in otr for update later ---------------------------------------------------------------------------------------
                 otr.setTitle(titleBox.getText().toString());
                 otr.setDesc(descBox.getText().toString());
                 otr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
-                otr.setDueTime(c1);
-
-
+                otr.setDueTime(c1);*/
             }else if(intent.getAction().equals("create")){
 
             }
@@ -123,7 +121,16 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 tr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
                 tr.setDueTime(c1);
 
-                if (getintent.getAction().equals("edit")) {
+                if (getIntent().getAction().equals("edit")) {
+                    TaskReminder otr = new TaskReminder(); //Store the old task in otr for update later ---------------------------------------------------------------------------------------
+                    otr.setTitle(getIntent().getStringExtra("title"));
+                    otr.setDesc(getIntent().getStringExtra("desc"));
+                    otr.setRecurring(getIntent().getStringExtra("recurring").toUpperCase());
+                    long dueTime = getIntent().getLongExtra("dueTime",c1.getTimeInMillis());
+                    Calendar oc = Calendar.getInstance();
+                    oc.setTimeInMillis(dueTime);
+                    otr.setDueTime(oc);
+
                     Log.d(TAG, "onClick: updateTask");
                     Toast.makeText(mContext, "updateTask: ", Toast.LENGTH_LONG).show();
                     sc.updateTask(tr, otr);
