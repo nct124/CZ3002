@@ -49,8 +49,19 @@ public class ScheduleService extends Service {
     }
     //==DO NOT TOUCH
 
-    public void updateTask(TaskReminder tr, TaskReminder otr) {
+    public void updateTask(TaskReminder tr, String id) {
+        TaskReminderDataSource datasource = new TaskReminderDataSource(this);
+        datasource.open();
+        datasource.updateTask(tr, id);
+        datasource.close();
 
+    }
+
+    public void deleteTaskAndAlarm(String id) {
+        TaskReminderDataSource ds = new TaskReminderDataSource(this);
+        ds.open();
+        ds.deleteTask(id);
+        ds.close();
 
     }
 

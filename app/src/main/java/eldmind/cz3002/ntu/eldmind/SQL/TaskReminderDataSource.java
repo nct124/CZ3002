@@ -24,6 +24,7 @@ public class TaskReminderDataSource {
     private String[] allColumns = { EldmindSQLiteHelper.COLUMN_TaskReminder_ID,
             EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE,EldmindSQLiteHelper.COLUMN_TaskReminder_DESC,
             EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING};
+    private String TAG = "TaskReminderDataSource";
 
     public TaskReminderDataSource(Context context) {
         dbHelper = new EldmindSQLiteHelper(context);
@@ -46,13 +47,13 @@ public class TaskReminderDataSource {
             long insertId = database.insert(EldmindSQLiteHelper.TABLE_TaskReminder, null, values);
             return true;
         }catch(SQLException ex){
-            Log.d("TaskReminderDataSource", "CreateNewTask error msg" + ex.getMessage());
+            Log.d(TAG, "CreateNewTask error msg" + ex.getMessage());
             return false;
         }
 
     }
 
-    public boolean updateTask(TaskReminder tr, TaskReminder otr) {
+    public boolean updateTask(TaskReminder tr, String id) {
         //TODO complete update task
         ContentValues values = new ContentValues();
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE, tr.getTitle());
@@ -61,21 +62,41 @@ public class TaskReminderDataSource {
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING, tr.getRecurring());
 
         try {
-            String selection = EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE + " ==" + otr.getTitle();
-            int count = database.update(EldmindSQLiteHelper.TABLE_TaskReminder, values, selection, null);
+            String selection = EldmindSQLiteHelper.COLUMN_TaskReminder_ID + " = " + id;
+            int count = database.update(
+                    EldmindSQLiteHelper.TABLE_TaskReminder,
+                    values,
+                    selection,
+                    null);
+            Log.d(TAG, "updateTask success id  ====>" + id);
+
         } catch (SQLException ex) {
-            Log.d("TaskReminderDataSource", "updateTask error msg" + ex.getMessage());
+            Log.d(TAG, "updateTask error msg" + ex.getMessage());
             return false;
         }
 
         return true;
     }
 
-    public void deleteTaskReminder(TaskReminder tr) {
+    public void deleteTask(String id) {
+        try {
+            database.delete(
+                    EldmindSQLiteHelper.TABLE_TaskReminder,
+                    EldmindSQLiteHelper.COLUMN_TaskReminder_ID + " = " + id,
+                    null);
+
+        } catch (SQLException ex) {
+            Log.d(TAG, "DeleteTaskReminder" + ex.getMessage());
+        }
+
+    }
+
+    public void deleteTaskReminder(TaskReminder tr) { //TODO ask CT what is this for? why not delete using the ID but the title and desc
         database.delete(EldmindSQLiteHelper.TABLE_TaskReminder,
                         EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE + " = '" + tr.getTitle() + "' AND " +
                         EldmindSQLiteHelper.COLUMN_TaskReminder_DESC + " = '" + tr.getDesc()+"' ",
                 null);
+
     }
 
     public List<TaskReminder> getAllTaskReminder() {

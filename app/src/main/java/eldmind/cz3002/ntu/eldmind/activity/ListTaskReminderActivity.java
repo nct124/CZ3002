@@ -38,7 +38,7 @@ public class ListTaskReminderActivity extends AppCompatActivity {
                 TaskReminder tr = (TaskReminder) parent.getItemAtPosition(position);
                 Intent intent = new Intent(mContext, ManageTaskReminderActivity.class);
                 intent.setAction("edit");
-                intent.putExtra("tr_id",tr.getId());
+                intent.putExtra("id", tr.getId() + "");
                 intent.putExtra("title",tr.getTitle());
                 intent.putExtra("desc",tr.getDesc());
                 intent.putExtra("dueTime",tr.getDueTime().getTimeInMillis());

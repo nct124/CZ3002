@@ -4,6 +4,7 @@
     <string name="time">Time</string>
     <string name="date">Date</string>
     <string name="set_button">Set</string>
+    <string name="delete_button">Delete</string>
     <string name="clear_button">Clear All</string>
     <string name="action_setttings">Meow</string>
     <string name="title_activity_second">SecondActivity</string>

@@ -69,7 +69,11 @@ public class ScheduleClient {
         mBoundService.createTaskAndAlarm(tr);
     }
 
-    public void updateTask(TaskReminder tr, TaskReminder otr) {
-        mBoundService.updateTask(tr, otr);
+    public void deleteTaskAndAlarm(String id) {
+        mBoundService.deleteTaskAndAlarm(id);
+    }
+
+    public void updateTask(TaskReminder tr, String id) {
+        mBoundService.updateTask(tr, id);
     }
 }

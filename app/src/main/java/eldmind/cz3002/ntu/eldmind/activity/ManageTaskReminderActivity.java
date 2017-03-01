@@ -41,6 +41,7 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
         Button dateSetter = (Button)findViewById(R.id.dateSetter);
         Button timeSetter = (Button)findViewById(R.id.timeSetter);
         Button setButton = (Button) findViewById(R.id.setButton);
+        Button deleteButton = (Button) findViewById(R.id.deleteButton);
         final EditText titleBox = (EditText)findViewById(R.id.titlebox);
         final EditText descBox = (EditText)findViewById(R.id.desc);
         final android.support.v7.widget.AppCompatSpinner recurringBox = (android.support.v7.widget.AppCompatSpinner)findViewById(R.id.Recurringbox);
@@ -121,22 +122,16 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 tr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
                 tr.setDueTime(c1);
 
-                if (getIntent().getAction().equals("edit")) {
-                    TaskReminder otr = new TaskReminder(); //Store the old task in otr for update later ---------------------------------------------------------------------------------------
-                    otr.setTitle(getIntent().getStringExtra("title"));
-                    otr.setDesc(getIntent().getStringExtra("desc"));
-                    otr.setRecurring(getIntent().getStringExtra("recurring").toUpperCase());
-                    long dueTime = getIntent().getLongExtra("dueTime",c1.getTimeInMillis());
-                    Calendar oc = Calendar.getInstance();
-                    oc.setTimeInMillis(dueTime);
-                    otr.setDueTime(oc);
+                if (getIntent().getAction().equals("edit")) { //TODO remove old alarm and set new alarm for the updated field
+                    String id = getIntent().getStringExtra("id");
+                    Toast.makeText(mContext, "myid =====>" + getIntent().getStringExtra("id"), Toast.LENGTH_SHORT).show();
 
-                    Log.d(TAG, "onClick: updateTask");
-                    Toast.makeText(mContext, "updateTask: ", Toast.LENGTH_LONG).show();
-                    sc.updateTask(tr, otr);
+                    Log.d(TAG, "onClick: updateTask id=" + id);
+                    //Toast.makeText(mContext, "updateTask: ", Toast.LENGTH_SHORT).show();
+                    sc.updateTask(tr, id);
                 } else {
                     Log.d(TAG, "onClick: createTask");
-                    Toast.makeText(mContext, "createTAsk: ", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(mContext, "createTAsk: ", Toast.LENGTH_SHORT).show();
                     sc.createTaskAndAlarm(tr); //Also creates the new item
                 }
 
@@ -147,6 +142,16 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 String minute = Integer.toString(c1.get(Calendar.MINUTE));
                 String time = dayOfMonth+"-"+month+"-"+year+" "+hourOfDay+":"+minute;
                 Toast.makeText(mContext,"alarm set: "+time,Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = getIntent().getStringExtra("id");
+                sc.deleteTaskAndAlarm(id); //TODO Delete Alarm
+                Toast.makeText(mContext, "Delete Button", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
