@@ -8,7 +8,9 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,10 @@ public class AlarmActivity extends AppCompatActivity {
         Log.d("alarm.secondActivity","alarm~~");
         mContext = this;
         setContentView(R.layout.activity_alarm);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("Alarm");
+        myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+        setSupportActionBar(myToolbar);
         Button stopbutton = (Button)findViewById(R.id.stopAlarmButton);
         stopbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,8 +82,8 @@ public class AlarmActivity extends AppCompatActivity {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(c)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("REBOOT")
-                        .setContentText("RESET ALARMS");
+                        .setContentTitle("Alarm for ---> ") //TODO set alarm title
+                        .setContentText("Alarm Text");
         NotificationManager mNotificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(001, mBuilder.build());
     }

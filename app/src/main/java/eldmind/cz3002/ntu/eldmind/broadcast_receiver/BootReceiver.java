@@ -9,7 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.List;
@@ -26,6 +25,7 @@ import eldmind.cz3002.ntu.eldmind.others.AlarmTask;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+
         TaskReminderDataSource datasource = new TaskReminderDataSource(context);
         datasource.open();
         List<TaskReminder> list =  datasource.getAllTaskReminder();
@@ -58,8 +58,8 @@ public class BootReceiver extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(c)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("REBOOT")
-                        .setContentText("RESET ALARMS");
+                        .setContentTitle("Alert Title")
+                        .setContentText("Alert Text");
         NotificationManager mNotificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(001, mBuilder.build());
     }

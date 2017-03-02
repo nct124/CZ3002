@@ -65,15 +65,19 @@ public class ScheduleClient {
     }
     //==DO NOT TOUCH
 
-    public void createTaskAndAlarm(TaskReminder tr) {
-        mBoundService.createTaskAndAlarm(tr);
+    public void createTask(TaskReminder tr) {
+        mBoundService.createTask(tr);
     }
 
-    public void deleteTaskAndAlarm(String id) {
-        mBoundService.deleteTaskAndAlarm(id);
+    public void createAlarm(TaskReminder tr) {
+        mBoundService.createAlarm(tr);
     }
 
-    public void updateTask(TaskReminder tr, String id) {
-        mBoundService.updateTask(tr, id);
+    public void deleteTaskAndAlarm(String id, TaskReminder otr) {
+        mBoundService.deleteTaskAndAlarm(id, otr);
+    }
+
+    public void updateTask(TaskReminder tr, TaskReminder otr, String id) {
+        mBoundService.updateTask(tr, otr, id);
     }
 }

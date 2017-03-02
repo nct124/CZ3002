@@ -68,12 +68,8 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 }else if(intent.getStringExtra("recurring").equals("WEEKLY")){
                     recurringBox.setSelection(1);
                 }
-                /*
-                TaskReminder otr = new TaskReminder(); //Store the old task in otr for update later ---------------------------------------------------------------------------------------
-                otr.setTitle(titleBox.getText().toString());
-                otr.setDesc(descBox.getText().toString());
-                otr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
-                otr.setDueTime(c1);*/
+
+
             }else if(intent.getAction().equals("create")){
 
             }
@@ -122,17 +118,26 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                 tr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
                 tr.setDueTime(c1);
 
-                if (getIntent().getAction().equals("edit")) { //TODO remove old alarm and set new alarm for the updated field
+                if (getIntent().getAction().equals("edit")) {
                     String id = getIntent().getStringExtra("id");
-                    Toast.makeText(mContext, "myid =====>" + getIntent().getStringExtra("id"), Toast.LENGTH_SHORT).show();
 
+                    //Create the old task reminder to delete/update alarm
+                    TaskReminder otr = new TaskReminder();
+                    otr.setTitle(getIntent().getStringExtra("title"));
+                    otr.setDesc(getIntent().getStringExtra("desc"));
+                    otr.setRecurring(getIntent().getStringExtra("recurring").toUpperCase());
+                    long dueTime = getIntent().getLongExtra("dueTime", c1.getTimeInMillis());
+                    Calendar oc = Calendar.getInstance();
+                    oc.setTimeInMillis(dueTime);
+                    otr.setDueTime(oc);
+
+                    Toast.makeText(mContext, "myid =====>" + getIntent().getStringExtra("id"), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onClick: updateTask id=" + id);
-                    //Toast.makeText(mContext, "updateTask: ", Toast.LENGTH_SHORT).show();
-                    sc.updateTask(tr, id);
+                    sc.updateTask(tr, otr, id);
                 } else {
                     Log.d(TAG, "onClick: createTask");
-                    //Toast.makeText(mContext, "createTAsk: ", Toast.LENGTH_SHORT).show();
-                    sc.createTaskAndAlarm(tr); //Also creates the new item
+                    sc.createTask(tr); //Also creates the new item
+                    sc.createAlarm(tr);
                 }
 
                 String year = Integer.toString(c1.get(Calendar.YEAR));
@@ -150,7 +155,17 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String id = getIntent().getStringExtra("id");
-                sc.deleteTaskAndAlarm(id); //TODO Delete Alarm
+                //Create the old task reminder to delete alarm
+                TaskReminder otr = new TaskReminder();
+                otr.setTitle(getIntent().getStringExtra("title"));
+                otr.setDesc(getIntent().getStringExtra("desc"));
+                otr.setRecurring(getIntent().getStringExtra("recurring").toUpperCase());
+                long dueTime = getIntent().getLongExtra("dueTime", c1.getTimeInMillis());
+                Calendar oc = Calendar.getInstance();
+                oc.setTimeInMillis(dueTime);
+                otr.setDueTime(oc);
+
+                sc.deleteTaskAndAlarm(id, otr); //TODO Delete Alarm
                 Toast.makeText(mContext, "Delete Button", Toast.LENGTH_SHORT).show();
                 finish();
             }
