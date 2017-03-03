@@ -65,8 +65,9 @@ public class ScheduleClient {
     }
     //==DO NOT TOUCH
 
-    public void createTask(TaskReminder tr) {
-        mBoundService.createTask(tr);
+    public int createTask(TaskReminder tr) {
+        int id = mBoundService.createTask(tr);
+        return id;
     }
 
     public void createAlarm(TaskReminder tr) {

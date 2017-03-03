@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import eldmind.cz3002.ntu.eldmind.R;
 import eldmind.cz3002.ntu.eldmind.SQL.EldmindSQLiteHelper;
@@ -22,6 +23,7 @@ import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 
 public class AlarmActivity extends AppCompatActivity {
     Context mContext;
+    final String TAG = "AlarmActivity";
     Ringtone r;
 
     @Override
@@ -58,13 +60,17 @@ public class AlarmActivity extends AppCompatActivity {
         noti(this);
 
         if(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING).equals("SINGLE")) {
+            /*
             TaskReminder tr = new TaskReminder();
             tr.setTitle(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE));
             tr.setDesc(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC));
-
+            */
+            //TODO After alarm sound, prompt if task finished instead of delete
+            String id = i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID);
+            //Toast.makeText(mContext, "My ID ==>" + id, Toast.LENGTH_SHORT).show();
             TaskReminderDataSource datasource = new TaskReminderDataSource(this);
             datasource.open();
-            datasource.deleteTaskReminder(tr);
+            datasource.deleteTask(id);
             datasource.close();
         }else{
 
@@ -79,11 +85,14 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     public void noti(Context c){
+        String title = getIntent().getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE);
+        String desc = getIntent().getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC);
+        Log.d(TAG, "");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(c)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Alarm for ---> ") //TODO set alarm title
-                        .setContentText("Alarm Text");
+                        .setContentTitle("Task Due: " + title)
+                        .setContentText(desc);
         NotificationManager mNotificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(001, mBuilder.build());
     }

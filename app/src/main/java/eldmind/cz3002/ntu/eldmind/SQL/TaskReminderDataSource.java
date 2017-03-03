@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +38,7 @@ public class TaskReminderDataSource {
         dbHelper.close();
     }
 
-    public boolean createNewTask(TaskReminder tr) {
+    public int createNewTask(TaskReminder tr) {
         ContentValues values = new ContentValues();
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE, tr.getTitle());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
@@ -45,16 +46,16 @@ public class TaskReminderDataSource {
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING, tr.getRecurring());
         try{
             long insertId = database.insert(EldmindSQLiteHelper.TABLE_TaskReminder, null, values);
-            return true;
+            Log.d(TAG, "CreateNewTask my insert id" + insertId);
+            return (int)insertId;
         }catch(SQLException ex){
             Log.d(TAG, "CreateNewTask error msg" + ex.getMessage());
-            return false;
+            return -1;
         }
 
     }
 
     public boolean updateTask(TaskReminder tr, String id) {
-        //TODO complete update task
         ContentValues values = new ContentValues();
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE, tr.getTitle());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
@@ -84,14 +85,14 @@ public class TaskReminderDataSource {
                     EldmindSQLiteHelper.TABLE_TaskReminder,
                     EldmindSQLiteHelper.COLUMN_TaskReminder_ID + " = " + id,
                     null);
-
+            Log.d(TAG, "DeleteTask Success id ==> " + id);
         } catch (SQLException ex) {
-            Log.d(TAG, "DeleteTaskReminder" + ex.getMessage());
+            Log.d(TAG, "DeleteTask SQLException ==>" + ex.getMessage() + "id==>" + id);
         }
 
     }
 
-    public void deleteTaskReminder(TaskReminder tr) { //TODO ask CT what is this for? why not delete using the ID but the title and desc
+    public void deleteTaskReminder2(TaskReminder tr) { //TODO ask CT what is this for? why not delete using the ID but the title and desc
         database.delete(EldmindSQLiteHelper.TABLE_TaskReminder,
                         EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE + " = '" + tr.getTitle() + "' AND " +
                         EldmindSQLiteHelper.COLUMN_TaskReminder_DESC + " = '" + tr.getDesc()+"' ",

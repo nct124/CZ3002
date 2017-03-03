@@ -53,7 +53,7 @@ public class RegisterPhoneActivity extends AppCompatActivity {
     }
     private void updateLocal(String token,int phoneNumber){
         datasource.updateElderly(phoneNumber,token);
-        Toast.makeText(mContext,phoneNumber+" "+token,Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext,phoneNumber+" "+token,Toast.LENGTH_SHORT).show();
     }
     private void updateServer(String token,int phoneNumber){
         Log.d(TAG, "updateServer");

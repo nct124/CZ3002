@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -37,7 +38,11 @@ public class BootReceiver extends BroadcastReceiver {
                 at.run();
             }else{
                 if(tr.getRecurring().equals("SINGLE")){
-                    datasource.deleteTaskReminder(tr);
+
+                    //datasource.deleteTaskReminder(tr);
+                    //Toast.makeText(context, "value of id ==> " + tr.getId(), Toast.LENGTH_SHORT).show();
+                    datasource.deleteTask( Integer.toString(tr.getId()) );
+
                 }else if(tr.getRecurring().equals("WEEKLY")){
                     tr.getDueTime().add(Calendar.DATE,7);
                 }
@@ -58,8 +63,8 @@ public class BootReceiver extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(c)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Alert Title")
-                        .setContentText("Alert Text");
+                        .setContentTitle("Alert Title todo")
+                        .setContentText("Alert Text todo");
         NotificationManager mNotificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(001, mBuilder.build());
     }
