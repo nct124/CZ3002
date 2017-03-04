@@ -91,15 +91,15 @@ public class TaskReminderDataSource {
         }
 
     }
-
-    public void deleteTaskReminder2(TaskReminder tr) { //TODO ask CT what is this for? why not delete using the ID but the title and desc
+/*
+    public void deleteTaskReminder2(TaskReminder tr) { //TODO previous method of deleting task. Not sure if its still useful
         database.delete(EldmindSQLiteHelper.TABLE_TaskReminder,
                         EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE + " = '" + tr.getTitle() + "' AND " +
                         EldmindSQLiteHelper.COLUMN_TaskReminder_DESC + " = '" + tr.getDesc()+"' ",
                 null);
 
     }
-
+*/
     public List<TaskReminder> getAllTaskReminder() {
         List<TaskReminder> trs = new ArrayList<TaskReminder>();
 

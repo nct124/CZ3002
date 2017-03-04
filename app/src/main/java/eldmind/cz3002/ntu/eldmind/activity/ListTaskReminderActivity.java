@@ -26,6 +26,7 @@ public class ListTaskReminderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_task_reminder);
         mContext = this;
+        //TODO add a way to logout
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setTitle("Task Reminders");
         myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));

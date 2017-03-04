@@ -1,6 +1,7 @@
 package eldmind.cz3002.ntu.eldmind.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,18 @@ public class RegisterPhoneActivity extends AppCompatActivity {
         mContext = this;
         final Button registerButton = (Button)findViewById(R.id.register_button);
         final EditText phoneBox = (EditText)findViewById(R.id.phonebox);
+
+        //Check if previous number exist. If so, skip to next screen
+        datasource = new ElderlyDataSource(mContext);
+        datasource.open();
+        List<Elderly> list = datasource.getAllElderly();
+        datasource.close();
+        if (list.size() > 0)
+        {
+            Intent intent = new Intent(this, ListTaskReminderActivity.class);
+            startActivity(intent);
+            finish();
+        }
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,6 +58,7 @@ public class RegisterPhoneActivity extends AppCompatActivity {
                     e = list.get(0);
                     updateLocal(e.getFirebaseToken(),phoneNumber);
                     updateServer(e.getFirebaseToken(),phoneNumber);
+                    finish(); //Prevents the user from pressing back
                 }
                 datasource.close();
             }
