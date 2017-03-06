@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import eldmind.cz3002.ntu.eldmind.R;
+import eldmind.cz3002.ntu.eldmind.SQL.ElderlyDataSource;
 import eldmind.cz3002.ntu.eldmind.SQL.TaskReminderDataSource;
 import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 
@@ -72,9 +74,25 @@ public class ListTaskReminderActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.create_task_reminder:
-                Intent intent = new Intent(this, ManageTaskReminderActivity.class);
-                intent.setAction("create");
-                startActivity(intent);
+                Intent MTRAIntent = new Intent(this, ManageTaskReminderActivity.class);
+                MTRAIntent.setAction("create");
+                startActivity(MTRAIntent);
+                return true;
+            case R.id.logout:
+                Toast.makeText(mContext, "Logout", Toast.LENGTH_SHORT).show();
+                ElderlyDataSource datasource = new ElderlyDataSource(mContext);
+                datasource.open();
+                datasource.removePhoneNumber();
+                datasource.close();
+                Intent registerIntent = new Intent(this, RegisterPhoneActivity.class);
+                startActivity(registerIntent);
+                finish();
+                return true;
+            case R.id.refresh:
+                Toast.makeText(mContext, "Refresh", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.addElder:
+                Toast.makeText(mContext, "add new Elder", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

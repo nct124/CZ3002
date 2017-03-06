@@ -40,18 +40,31 @@ public class RegisterPhoneActivity extends AppCompatActivity {
         datasource.open();
         List<Elderly> list = datasource.getAllElderly();
         datasource.close();
-        if (list.size() > 0)
-        {
-            Intent intent = new Intent(this, ListTaskReminderActivity.class);
-            startActivity(intent);
-            finish();
+        if (list.size() > 0) {
+            if (list.get(0).getPhone() != -1) //If phone number is -1 == logged out
+            {
+                Intent intent = new Intent(this, ListTaskReminderActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int phoneNumber;
+                try {
+                    phoneNumber = Integer.parseInt(phoneBox.getText().toString());
+                } catch (Exception ex) {
+                    Toast.makeText(RegisterPhoneActivity.this, "Please enter a phone number!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "registerButton: Error ==>" + ex.getMessage());
+                    return; //Break after catch
+                }
+
                 datasource = new ElderlyDataSource(mContext);
                 datasource.open();
-                int phoneNumber = Integer.parseInt(phoneBox.getText().toString());
+
                 Elderly e = null;
                 List<Elderly> list = datasource.getAllElderly();
                 if (list.size() > 0) { //Get previous firebase token and the existing phonenumber
@@ -61,6 +74,7 @@ public class RegisterPhoneActivity extends AppCompatActivity {
                     finish(); //Prevents the user from pressing back
                 }
                 datasource.close();
+
             }
         });
 

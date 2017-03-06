@@ -10,6 +10,9 @@
     <string name="title_activity_second">SecondActivity</string>
     <string name="gae_url">http://eldmind-d78f4.appspot.com/</string>
     <string name="gae_addelderly_url">/addElderly</string>
+    <string name="logout">Logout</string>
+    <string name="refresh">refresh</string>
+    <string name="addElderly">Add Elderly</string>
     <string-array name="recurringItem">
         <item>Single</item>
         <item>Weekly</item>

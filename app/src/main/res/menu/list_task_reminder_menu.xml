@@ -4,7 +4,23 @@
     tools:context="eldmind.cz3002.ntu.eldmind.activity.ListTaskReminderActivity">
     <item
         android:id="@+id/create_task_reminder"
-        android:title=""
         android:icon="@android:drawable/ic_menu_add"
+        android:title=""
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/logout"
+        android:title="@string/logout"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/addElder"
+        android:title="@string/addElderly"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/refresh"
+        android:title="@string/refresh"
+        app:showAsAction="never" />
+
 </menu>

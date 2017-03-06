@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,20 @@ public class ElderlyDataSource {
             return false;
         }
     }
+
+    public boolean removePhoneNumber() {
+        ContentValues cv = new ContentValues();
+        cv.put(EldmindSQLiteHelper.COLUMN_Elderly_PhoneNumber, -1);
+        try {
+            //database.execSQL("DELETE FROM " + EldmindSQLiteHelper.TABLE_Elderly);
+            database.update(EldmindSQLiteHelper.TABLE_Elderly,
+                    cv, null, null);
+        } catch (SQLException ex) {
+            Log.d("ElderlyDataSource", "Error===>" + ex);
+        }
+        return true;
+    }
+
     public boolean updateElderly(String newFirebaseToken,String oldFirebaseToken){
         ContentValues args = new ContentValues();
         args.put(EldmindSQLiteHelper.COLUMN_Elderly_FirebaseToken,newFirebaseToken);
