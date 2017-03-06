@@ -71,7 +71,7 @@ public class RegisterPhoneActivity extends AppCompatActivity {
                     e = list.get(0);
                     updateLocal(e.getFirebaseToken(),phoneNumber);
                     updateServer(e.getFirebaseToken(),phoneNumber);
-                    finish(); //Prevents the user from pressing back
+                    //finish(); //Prevents the user from pressing back
                 }
                 datasource.close();
 
@@ -81,7 +81,7 @@ public class RegisterPhoneActivity extends AppCompatActivity {
     }
     private void updateLocal(String token,int phoneNumber){
         datasource.updateElderly(phoneNumber,token);
-        Toast.makeText(mContext,phoneNumber+" "+token,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext,phoneNumber+" "+token,Toast.LENGTH_SHORT).show();
     }
     private void updateServer(String token,int phoneNumber){
         Log.d(TAG, "updateServer");

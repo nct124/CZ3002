@@ -1,5 +1,7 @@
 package eldmind.cz3002.ntu.eldmind.AsyncTask;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,23 +24,49 @@ import eldmind.cz3002.ntu.eldmind.activity.ListTaskReminderActivity;
  */
 
 public class RegisterElderlyTask extends AsyncTask<String, Integer, String> {
+    private static ProgressDialog dialog;
     Context mContext;
+    private Activity mActivity;
 
-    public RegisterElderlyTask(Context mContext) {
-        this.mContext = mContext;
+    /*
+        public RegisterElderlyTask(Context mContext) {
+
+            this.mContext = mContext;
+        }
+    */
+    public RegisterElderlyTask(Activity mActivity) {
+
+        //this.mContext = mContext;
+        this.mActivity = mActivity;
+        this.mContext = mActivity;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        //Intent intent = new Intent(mContext, ListTaskReminderActivity.class);
+        //mContext.startActivity(intent);
+        //Toast.makeText(mContext,"Registered successfully",Toast.LENGTH_LONG).show();
+        //Dialog d = new ProgressDialog();
+        dialog = new ProgressDialog(mContext);
+        dialog.setMessage("Please Wait");
+        dialog.show();
+
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+
         try {
             JSONObject resp = new JSONObject(s);
             if(resp.getBoolean("success")){
+                mActivity.finish();
                 Intent intent = new Intent(mContext, ListTaskReminderActivity.class);
                 mContext.startActivity(intent);
                 Toast.makeText(mContext,"Registered successfully",Toast.LENGTH_LONG).show();
@@ -48,6 +76,7 @@ public class RegisterElderlyTask extends AsyncTask<String, Integer, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
     }
 
