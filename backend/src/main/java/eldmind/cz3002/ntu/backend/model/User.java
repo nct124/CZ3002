@@ -8,7 +8,7 @@ import com.googlecode.objectify.annotation.Id;
  */
 
 @Entity
-public class Elderly {
+public class User {
     @Id private long Id;
     private String firebaseToken;
 

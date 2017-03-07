@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import eldmind.cz3002.ntu.backend.model.Elderly;
+import eldmind.cz3002.ntu.backend.model.User;
 import eldmind.cz3002.ntu.backend.others.GAEConstants;
 
 public class SendFCMExampleServlet extends HttpServlet {
@@ -49,9 +49,9 @@ public class SendFCMExampleServlet extends HttpServlet {
         resp.getWriter().println(responseString);*/
 
         String output = "";
-        List<Elderly> list = ObjectifyService.ofy().load().type(Elderly.class).list();
+        List<User> list = ObjectifyService.ofy().load().type(User.class).list();
         for(int i=0;i<list.size();i++){
-            Elderly e1 = list.get(i);
+            User e1 = list.get(i);
             output+=e1.getFirebaseToken()+"<br/>";
             HttpClient client = HttpClientBuilder.create().build();
             HttpPost request = new HttpPost(GAEConstants.FCM_URL);

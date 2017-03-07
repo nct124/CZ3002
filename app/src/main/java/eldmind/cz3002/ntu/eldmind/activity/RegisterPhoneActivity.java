@@ -14,14 +14,14 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import eldmind.cz3002.ntu.eldmind.AsyncTask.RegisterElderlyTask;
+import eldmind.cz3002.ntu.eldmind.AsyncTask.RegisterUserTask;
 import eldmind.cz3002.ntu.eldmind.R;
-import eldmind.cz3002.ntu.eldmind.SQL.ElderlyDataSource;
-import eldmind.cz3002.ntu.eldmind.model.Elderly;
+import eldmind.cz3002.ntu.eldmind.SQL.UserDataSource;
+import eldmind.cz3002.ntu.eldmind.model.User;
 
 public class RegisterPhoneActivity extends AppCompatActivity {
     final String TAG = "RegisterPhoneActivity";
-    ElderlyDataSource datasource;
+    UserDataSource datasource;
     Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +36,9 @@ public class RegisterPhoneActivity extends AppCompatActivity {
         final EditText phoneBox = (EditText)findViewById(R.id.phonebox);
 
         //Check if previous number exist. If so, skip to next screen
-        datasource = new ElderlyDataSource(mContext);
+        datasource = new UserDataSource(mContext);
         datasource.open();
-        List<Elderly> list = datasource.getAllElderly();
+        List<User> list = datasource.getAllUser();
         datasource.close();
         if (list.size() > 0) {
             if (list.get(0).getPhone() != -1) //If phone number is -1 == logged out
@@ -62,11 +62,11 @@ public class RegisterPhoneActivity extends AppCompatActivity {
                     return; //Break after catch
                 }
 
-                datasource = new ElderlyDataSource(mContext);
+                datasource = new UserDataSource(mContext);
                 datasource.open();
 
-                Elderly e = null;
-                List<Elderly> list = datasource.getAllElderly();
+                User e = null;
+                List<User> list = datasource.getAllUser();
                 if (list.size() > 0) { //Get previous firebase token and the existing phonenumber
                     e = list.get(0);
                     updateLocal(e.getFirebaseToken(),phoneNumber);
@@ -86,7 +86,7 @@ public class RegisterPhoneActivity extends AppCompatActivity {
     private void updateServer(String token,int phoneNumber){
         Log.d(TAG, "updateServer");
         String [] params = {token,Long.toString(phoneNumber)};
-        RegisterElderlyTask task = new RegisterElderlyTask(this);
+        RegisterUserTask task = new RegisterUserTask(this);
         task.execute(params);
     }
 }

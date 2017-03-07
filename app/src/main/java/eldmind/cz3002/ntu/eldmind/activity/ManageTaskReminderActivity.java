@@ -110,13 +110,20 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 TaskReminder tr = new TaskReminder();
                 tr.setTitle(titleBox.getText().toString());
                 tr.setDesc(descBox.getText().toString());
                 tr.setRecurring(recurringBox.getSelectedItem().toString().toUpperCase());
-                tr.setDueTime(c1);
-
+                if(tr.getRecurring().equals("SINGLE")){
+                    tr.setDueTime(c1);
+                    tr.setWeeklyDay(null);
+                    tr.setWeeklyTime(null);
+                }else{ //weekly
+                    tr.setDueTime(null);
+                    tr.setWeeklyDay(null);//add something
+                    tr.setWeeklyTime(null);//add something
+                }
+                tr.setStatus("ENABLED");
                 if (getIntent().getAction().equals("edit")) { //Update Task
                     String id = getIntent().getStringExtra("id");
 
@@ -158,7 +165,6 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (getIntent().getAction().equals("edit")){
                     //Only if it is updating previous value then delete otherwise do nothing.
                     String id = getIntent().getStringExtra("id");
@@ -172,11 +178,9 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                     otr.setDueTime(oc);
                     sc.deleteTaskAndAlarm(id, otr); //Delete Task and Alarm
                     Toast.makeText(mContext, "Task Deleted", Toast.LENGTH_SHORT).show();
-                }else{
+                }else {
                     Toast.makeText(mContext, "Task Canceled", Toast.LENGTH_SHORT).show();
                 }
-
-
                 finish();
             }
         });

@@ -17,7 +17,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import eldmind.cz3002.ntu.eldmind.R;
-import eldmind.cz3002.ntu.eldmind.SQL.ElderlyDataSource;
+import eldmind.cz3002.ntu.eldmind.SQL.UserDataSource;
 import eldmind.cz3002.ntu.eldmind.SQL.TaskReminderDataSource;
 import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 
@@ -80,7 +80,7 @@ public class ListTaskReminderActivity extends AppCompatActivity {
                 return true;
             case R.id.logout:
                 Toast.makeText(mContext, "Logout", Toast.LENGTH_SHORT).show();
-                ElderlyDataSource datasource = new ElderlyDataSource(mContext);
+                UserDataSource datasource = new UserDataSource(mContext);
                 datasource.open();
                 datasource.removePhoneNumber();
                 datasource.close();

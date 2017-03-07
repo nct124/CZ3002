@@ -14,12 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import eldmind.cz3002.ntu.eldmind.R;
 import eldmind.cz3002.ntu.eldmind.SQL.EldmindSQLiteHelper;
 import eldmind.cz3002.ntu.eldmind.SQL.TaskReminderDataSource;
-import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 
 public class AlarmActivity extends AppCompatActivity {
     Context mContext;
@@ -60,11 +58,6 @@ public class AlarmActivity extends AppCompatActivity {
         noti(this);
 
         if(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING).equals("SINGLE")) {
-            /*
-            TaskReminder tr = new TaskReminder();
-            tr.setTitle(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE));
-            tr.setDesc(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC));
-            */
             //TODO After alarm sound, prompt if task finished instead of delete
             String id = i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID);
             //Toast.makeText(mContext, "My ID ==>" + id, Toast.LENGTH_SHORT).show();

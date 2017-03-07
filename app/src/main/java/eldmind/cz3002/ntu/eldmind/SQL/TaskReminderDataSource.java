@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +23,11 @@ public class TaskReminderDataSource {
     private EldmindSQLiteHelper dbHelper;
     private String[] allColumns = { EldmindSQLiteHelper.COLUMN_TaskReminder_ID,
             EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE,EldmindSQLiteHelper.COLUMN_TaskReminder_DESC,
-            EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING};
+            EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING,
+            EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME,//for SINGLE
+            EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY,EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME,//for weekly
+            EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS};
+
     private String TAG = "TaskReminderDataSource";
 
     public TaskReminderDataSource(Context context) {
@@ -44,6 +47,9 @@ public class TaskReminderDataSource {
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, tr.getDueTime().getTimeInMillis());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING, tr.getRecurring());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY, tr.getWeeklyDay());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME, tr.getWeeklyTime());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS, tr.getStatus());
         try{
             long insertId = database.insert(EldmindSQLiteHelper.TABLE_TaskReminder, null, values);
             Log.d(TAG, "CreateNewTask my insert id" + insertId);
@@ -61,7 +67,9 @@ public class TaskReminderDataSource {
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, tr.getDueTime().getTimeInMillis());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING, tr.getRecurring());
-
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY, tr.getWeeklyDay());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME, tr.getWeeklyTime());
+        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS, tr.getStatus());
         try {
             String selection = EldmindSQLiteHelper.COLUMN_TaskReminder_ID + " = " + id;
             int count = database.update(
@@ -70,20 +78,26 @@ public class TaskReminderDataSource {
                     selection,
                     null);
             Log.d(TAG, "updateTask success id  ====>" + id);
-
         } catch (SQLException ex) {
             Log.d(TAG, "updateTask error msg" + ex.getMessage());
             return false;
         }
-
         return true;
     }
 
     public void deleteTask(String id) {
         try {
-            database.delete(
+            /*database.delete(
                     EldmindSQLiteHelper.TABLE_TaskReminder,
                     EldmindSQLiteHelper.COLUMN_TaskReminder_ID + " = " + id,
+                    null);*/
+            ContentValues values = new ContentValues();
+            values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS, "DISABLED");
+            String selection = EldmindSQLiteHelper.COLUMN_TaskReminder_ID + " = " + id;
+            database.update(
+                    EldmindSQLiteHelper.TABLE_TaskReminder,
+                    values,
+                    selection,
                     null);
             Log.d(TAG, "DeleteTask Success id ==> " + id);
         } catch (SQLException ex) {
@@ -103,9 +117,10 @@ public class TaskReminderDataSource {
     public List<TaskReminder> getAllTaskReminder() {
         List<TaskReminder> trs = new ArrayList<TaskReminder>();
 
-        Cursor cursor = database.query(EldmindSQLiteHelper.TABLE_TaskReminder,
-                allColumns, null, null, null, null, null);
-
+        /*Cursor cursor = database.query(EldmindSQLiteHelper.TABLE_TaskReminder,
+                allColumns, null, null, null, null, null);*/
+        String selection = EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS + " = 'ENABLED'";
+        Cursor cursor = database.query(EldmindSQLiteHelper.TABLE_TaskReminder,allColumns,selection,null,null,null,null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             TaskReminder tr = cursorToTaskReminder(cursor);
@@ -122,10 +137,13 @@ public class TaskReminderDataSource {
         tr.setId(cursor.getInt(0));
         tr.setTitle(cursor.getString(1));
         tr.setDesc(cursor.getString(2));
+        tr.setRecurring(cursor.getString(3));
         Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(cursor.getLong(3));
+        c.setTimeInMillis(cursor.getLong(4));
         tr.setDueTime(c);
-        tr.setRecurring(cursor.getString(4));
+        tr.setWeeklyDay(cursor.getString(5));
+        tr.setWeeklyTime(cursor.getString(6));
+        tr.setStatus(cursor.getString(7));
         return tr;
     }
 }

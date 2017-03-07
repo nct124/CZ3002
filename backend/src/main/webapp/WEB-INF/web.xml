@@ -5,8 +5,12 @@
         <servlet-class>eldmind.cz3002.ntu.backend.SendFCMExampleServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddElderlyServlet</servlet-name>
-        <servlet-class>eldmind.cz3002.ntu.backend.AddElderlyServlet</servlet-class>
+        <servlet-name>AddUserServlet</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.AddUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TrialServlet</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.TrialServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -14,8 +18,12 @@
         <url-pattern>/sendAll</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddElderlyServlet</servlet-name>
-        <url-pattern>/addElderly</url-pattern>
+        <servlet-name>AddUserServlet</servlet-name>
+        <url-pattern>/addUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TrialServlet</servlet-name>
+        <url-pattern>/trial</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

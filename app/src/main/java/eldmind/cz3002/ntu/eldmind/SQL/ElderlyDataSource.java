@@ -1,26 +1,22 @@
 package eldmind.cz3002.ntu.eldmind.SQL;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import eldmind.cz3002.ntu.eldmind.model.Elderly;
 
 /**
- * Created by n on 23/2/2017.
+ * Created by n on 7/3/2017.
  */
 
 public class ElderlyDataSource {
-    // Database fields
     private SQLiteDatabase database;
     private EldmindSQLiteHelper dbHelper;
-    private String[] allColumns = { EldmindSQLiteHelper.COLUMN_Elderly_PhoneNumber,EldmindSQLiteHelper.COLUMN_Elderly_FirebaseToken};
+    private String[] allColumns = { EldmindSQLiteHelper.COLUMN_Elderly_PHONENUMBER};
+
+    private String TAG = "ElderlyDataSource";
 
     public ElderlyDataSource(Context context) {
         dbHelper = new EldmindSQLiteHelper(context);
@@ -33,63 +29,8 @@ public class ElderlyDataSource {
         dbHelper.close();
     }
 
-    public boolean createElderly(String firebaseToken){
-        ContentValues values = new ContentValues();
-        values.put(EldmindSQLiteHelper.COLUMN_Elderly_FirebaseToken, firebaseToken);
-        try{
-            long insertId = database.insert(EldmindSQLiteHelper.TABLE_Elderly, null, values);
-            return true;
-        }catch(SQLException ex){
-            return false;
-        }
-    }
-
-    public boolean removePhoneNumber() {
-        ContentValues cv = new ContentValues();
-        cv.put(EldmindSQLiteHelper.COLUMN_Elderly_PhoneNumber, -1);
-        try {
-            //database.execSQL("DELETE FROM " + EldmindSQLiteHelper.TABLE_Elderly);
-            database.update(EldmindSQLiteHelper.TABLE_Elderly,
-                    cv, null, null);
-        } catch (SQLException ex) {
-            Log.d("ElderlyDataSource", "Error===>" + ex);
-        }
-        return true;
-    }
-
-    public boolean updateElderly(String newFirebaseToken,String oldFirebaseToken){
-        ContentValues args = new ContentValues();
-        args.put(EldmindSQLiteHelper.COLUMN_Elderly_FirebaseToken,newFirebaseToken);
-        String where = EldmindSQLiteHelper.COLUMN_Elderly_FirebaseToken+"=?";
-        String [] whereargs = {oldFirebaseToken};
-        return (database.update(EldmindSQLiteHelper.TABLE_Elderly,args,where,whereargs)>0);
-    }
-    public boolean updateElderly(int phoneNumber,String firebaseToken){
-        ContentValues args = new ContentValues();
-        args.put(EldmindSQLiteHelper.COLUMN_Elderly_PhoneNumber,phoneNumber);
-        String where = EldmindSQLiteHelper.COLUMN_Elderly_FirebaseToken+"=?";
-        String [] whereargs = {firebaseToken};
-        return (database.update(EldmindSQLiteHelper.TABLE_Elderly,args,where,whereargs)>0);
-    }
-    public List<Elderly> getAllElderly() {
-        List<Elderly> es = new ArrayList<Elderly>();
-        Cursor cursor = database.query(EldmindSQLiteHelper.TABLE_Elderly,
-                allColumns, null, null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Elderly e = cursorToElderly(cursor);
-            es.add(e);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return es;
-    }
-    private Elderly cursorToElderly(Cursor cursor) {
-        Elderly e = new Elderly();
-        e.setPhone(cursor.getInt(0));
-        e.setFirebaseToken(cursor.getString(1));
+    private Elderly cursorToTaskReminder(Cursor cursor) {
+        Elderly e = new Elderly(cursor.getInt(0));
         return e;
     }
 }

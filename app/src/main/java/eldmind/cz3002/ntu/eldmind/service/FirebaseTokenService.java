@@ -15,8 +15,8 @@ import java.net.URL;
 import java.util.List;
 
 import eldmind.cz3002.ntu.eldmind.R;
-import eldmind.cz3002.ntu.eldmind.SQL.ElderlyDataSource;
-import eldmind.cz3002.ntu.eldmind.model.Elderly;
+import eldmind.cz3002.ntu.eldmind.SQL.UserDataSource;
+import eldmind.cz3002.ntu.eldmind.model.User;
 
 /**
  * Created by n on 22/2/2017.
@@ -24,7 +24,7 @@ import eldmind.cz3002.ntu.eldmind.model.Elderly;
 
 public class FirebaseTokenService extends FirebaseInstanceIdService {
     private static final String TAG = "MyFirebaseIIDService";
-    ElderlyDataSource datasource;
+    UserDataSource datasource;
     @Override
     public void onTokenRefresh() {
 
@@ -34,10 +34,10 @@ public class FirebaseTokenService extends FirebaseInstanceIdService {
         Log.d(TAG, "Refreshed token: " + refreshedToken);
         boolean registered = false;
 
-        datasource = new ElderlyDataSource(this);
+        datasource = new UserDataSource(this);
         datasource.open();
-        Elderly e = null;
-        List<Elderly> list = datasource.getAllElderly();
+        User e = null;
+        List<User> list = datasource.getAllUser();
         if(list.size()>0){
             e = list.get(0);
             if(e.getPhone()>-1){
@@ -53,7 +53,7 @@ public class FirebaseTokenService extends FirebaseInstanceIdService {
         }
         datasource.close();
     }
-    private void updateLocal(String newToken,Elderly e){
+    private void updateLocal(String newToken,User e){
         if(e==null){
             datasource.createElderly(newToken);
         }else{
@@ -74,7 +74,7 @@ public class FirebaseTokenService extends FirebaseInstanceIdService {
         @Override
         public void run() {
             String url_text = getResources().getString(R.string.gae_url);
-            String action = getResources().getString(R.string.gae_addelderly_url);
+            String action = getResources().getString(R.string.gae_addUser_url);
             URL url;
             HttpURLConnection urlConnection = null;
             String resp = null;

@@ -9,7 +9,7 @@
     <string name="action_setttings">Meow</string>
     <string name="title_activity_second">SecondActivity</string>
     <string name="gae_url">http://eldmind-d78f4.appspot.com/</string>
-    <string name="gae_addelderly_url">/addElderly</string>
+    <string name="gae_addUser_url">/addUser</string>
     <string name="logout">Log Out</string>
     <string name="refresh">Refresh</string>
     <string name="addElderly">Add Elderly</string>

@@ -1,26 +1,21 @@
 package eldmind.cz3002.ntu.eldmind.model;
 
 /**
- * Created by n on 23/2/2017.
+ * Created by n on 7/3/2017.
  */
 
 public class Elderly {
-    private int phone;
-    private String firebaseToken;
+    private int phoneNumber;
 
-    public int getPhone() {
-        return phone;
+    public Elderly(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void setPhone(int phone) {
-        this.phone = phone;
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public String getFirebaseToken() {
-        return firebaseToken;
-    }
-
-    public void setFirebaseToken(String firebaseToken) {
-        this.firebaseToken = firebaseToken;
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
