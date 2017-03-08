@@ -2,6 +2,7 @@ package eldmind.cz3002.ntu.eldmind.AsyncTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -22,18 +23,22 @@ import eldmind.cz3002.ntu.eldmind.activity.ListTaskReminderActivity;
  * Created by n on 26/2/2017.
  */
 
-public class RegisterUserTask extends AsyncTask<String, Integer, String> {
+public class RegisterElderlyTask extends AsyncTask<String, Integer, String> {
     private static ProgressDialog dialog;
+    Context mContext;
     private Activity mActivity;
 
     /*
-        public RegisterUserTask(Context mContext) {
+        public RegisterElderlyTask(Context mContext) {
 
             this.mContext = mContext;
         }
     */
-    public RegisterUserTask(Activity mActivity) {
+    public RegisterElderlyTask(Activity mActivity) {
+
+        //this.mContext = mContext;
         this.mActivity = mActivity;
+        this.mContext = mActivity;
     }
 
     @Override
@@ -44,7 +49,7 @@ public class RegisterUserTask extends AsyncTask<String, Integer, String> {
         //mContext.startActivity(intent);
         //Toast.makeText(mContext,"Registered successfully",Toast.LENGTH_LONG).show();
         //Dialog d = new ProgressDialog();
-        dialog = new ProgressDialog(mActivity);
+        dialog = new ProgressDialog(mContext);
         dialog.setMessage("Please Wait");
         dialog.show();
 
@@ -62,11 +67,12 @@ public class RegisterUserTask extends AsyncTask<String, Integer, String> {
             JSONObject resp = new JSONObject(s);
             if(resp.getBoolean("success")){
                 mActivity.finish();
-                Intent intent = new Intent(mActivity, ListTaskReminderActivity.class);
-                mActivity.startActivity(intent);
-                Toast.makeText(mActivity,"Registered successfully",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mContext, ListTaskReminderActivity.class);
+                mContext.startActivity(intent);
+                Toast.makeText(mContext,"Registered successfully",Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(mActivity,"Registered unsuccessfully",Toast.LENGTH_LONG).show();
+                //TODO if register failed return to registerphone activity
+                Toast.makeText(mContext,"Registered unsuccessfully",Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -82,8 +88,8 @@ public class RegisterUserTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String url_text = mActivity.getResources().getString(R.string.gae_url);
-        String action = mActivity.getResources().getString(R.string.gae_addUser_url);
+        String url_text = mContext.getResources().getString(R.string.gae_url);
+        String action = mContext.getResources().getString(R.string.gae_addelderly_url);
         URL url;
         HttpURLConnection urlConnection = null;
         String resp = null;

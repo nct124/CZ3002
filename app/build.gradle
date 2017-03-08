@@ -24,12 +24,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //edited
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
-    testCompile 'junit:junit:4.12'
-    //edited
     compile 'com.google.firebase:firebase-messaging:10.2.0'
+    compile 'com.android.support.constraint:constraint-layout:+'
+    testCompile 'junit:junit:4.12'
 }
+
 
 apply plugin: 'com.google.gms.google-services'

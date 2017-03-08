@@ -59,7 +59,7 @@ public class SendFCMExampleServlet extends HttpServlet {
             request.setHeader("Authorization","key="+GAEConstants.AUTHORIZATION_KEY);
             JSONObject jo = new JSONObject();
             JSONObject data = new JSONObject();
-            data.put("message","hi2");
+            data.put("message","Hello Hello Chin Teck!! How are you!! (:");
             jo.put("to",e1.getFirebaseToken());
             jo.put("data",data);
             StringEntity se = new StringEntity(jo.toString());
