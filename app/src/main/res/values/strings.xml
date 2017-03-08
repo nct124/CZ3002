@@ -12,7 +12,7 @@
     <string name="gae_addUser_url">/addUser</string>
     <string name="logout">Log Out</string>
     <string name="refresh">Refresh</string>
-    <string name="addElderly">Add Elderly</string>
+    <string name="addCustodee">Add Custodee</string>
     <string-array name="recurringItem">
         <item>Single</item>
         <item>Weekly</item>

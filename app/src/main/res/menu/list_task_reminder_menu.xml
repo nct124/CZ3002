@@ -14,8 +14,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/addElder"
-        android:title="@string/addElderly"
+        android:id="@+id/addCustodee"
+        android:title="@string/addCustodee"
         app:showAsAction="never" />
 
     <item
