@@ -12,6 +12,10 @@
         <servlet-name>TrialServlet</servlet-name>
         <servlet-class>eldmind.cz3002.ntu.backend.TrialServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddCustodian</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.AddCustodeeServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>SendFCMExampleServlet</servlet-name>
@@ -24,6 +28,10 @@
     <servlet-mapping>
         <servlet-name>TrialServlet</servlet-name>
         <url-pattern>/trial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCustodian</servlet-name>
+        <url-pattern>/addCustodian</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

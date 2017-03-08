@@ -2,11 +2,8 @@ package eldmind.cz3002.ntu.eldmind.AsyncTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataOutputStream;
@@ -16,17 +13,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import eldmind.cz3002.ntu.eldmind.R;
-import eldmind.cz3002.ntu.eldmind.activity.ListTaskReminderActivity;
 
 /**
  * Created by n on 26/2/2017.
  */
 
-public class RegisterUserTask extends AsyncTask<String, Integer, String> {
+public class AddCustodeeTask extends AsyncTask<String, Integer, String> {
     private static ProgressDialog dialog;
     private Activity mActivity;
 
-    public RegisterUserTask(Activity mActivity) {
+    /*
+        public RegisterUserTask(Context mContext) {
+
+            this.mContext = mContext;
+        }
+    */
+    public AddCustodeeTask(Activity mActivity) {
         this.mActivity = mActivity;
     }
 
@@ -47,7 +49,7 @@ public class RegisterUserTask extends AsyncTask<String, Integer, String> {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-
+/*
         try {
             JSONObject resp = new JSONObject(s);
             if(resp.getBoolean("success")){
@@ -61,7 +63,7 @@ public class RegisterUserTask extends AsyncTask<String, Integer, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+*/
 
     }
 
@@ -72,24 +74,25 @@ public class RegisterUserTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... params) {
+
         String url_text = mActivity.getResources().getString(R.string.gae_url);
-        String action = mActivity.getResources().getString(R.string.gae_addUser_url);
+        String action = "/addCustodian";
         URL url;
         HttpURLConnection urlConnection = null;
         String resp = null;
         try {
-            url = new URL(url_text+action);
+            url = new URL(url_text + action);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
+
             JSONObject inputJO = new JSONObject();
-            inputJO.put("token",params[0]);
-            inputJO.put("phoneNumber",Long.parseLong(params[1]));
+            inputJO.put("phoneNumber", params[0]); //TODO remove hardcode
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            String parameters = "data="+inputJO.toString();
+            String parameters = "data=" + inputJO.toString();
             wr.write(parameters.getBytes());
 
             InputStream in = urlConnection.getInputStream();

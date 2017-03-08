@@ -1,24 +1,29 @@
 package eldmind.cz3002.ntu.eldmind.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
 
+import eldmind.cz3002.ntu.eldmind.AsyncTask.AddCustodeeTask;
 import eldmind.cz3002.ntu.eldmind.R;
-import eldmind.cz3002.ntu.eldmind.SQL.UserDataSource;
 import eldmind.cz3002.ntu.eldmind.SQL.TaskReminderDataSource;
+import eldmind.cz3002.ntu.eldmind.SQL.UserDataSource;
 import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 
 public class ListTaskReminderActivity extends AppCompatActivity {
@@ -91,11 +96,50 @@ public class ListTaskReminderActivity extends AppCompatActivity {
             case R.id.refresh:
                 Toast.makeText(mContext, "Refresh", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.addElder:
-                Toast.makeText(mContext, "add new Elder", Toast.LENGTH_SHORT).show();
+            case R.id.addCustodee:
+                //TODO Add Custodian RN is trying to send notification to a specific phone number NOT WORKING**
+                Toast.makeText(mContext, "Add Custodian", Toast.LENGTH_SHORT).show();
+                askPhoneNumber();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void askPhoneNumber() {
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View dialogView = li.inflate(R.layout.ask_for_phone_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setView(dialogView);
+        final EditText userInput = (EditText) dialogView.findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String phoneNumber = userInput.getText().toString();
+                                addCustodian(phoneNumber);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void addCustodian(String phoneNumber) {
+        AddCustodeeTask task = new AddCustodeeTask(this);
+        String[] params = {phoneNumber};
+        task.execute(params);
     }
 }
