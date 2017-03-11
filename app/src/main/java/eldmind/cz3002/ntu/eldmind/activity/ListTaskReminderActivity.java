@@ -22,6 +22,7 @@ import java.util.List;
 
 import eldmind.cz3002.ntu.eldmind.AsyncTask.AddCustodeeTask;
 import eldmind.cz3002.ntu.eldmind.R;
+import eldmind.cz3002.ntu.eldmind.SQL.EldmindSQLiteHelper;
 import eldmind.cz3002.ntu.eldmind.SQL.TaskReminderDataSource;
 import eldmind.cz3002.ntu.eldmind.SQL.UserDataSource;
 import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
@@ -46,11 +47,17 @@ public class ListTaskReminderActivity extends AppCompatActivity {
                 TaskReminder tr = (TaskReminder) parent.getItemAtPosition(position);
                 Intent intent = new Intent(mContext, ManageTaskReminderActivity.class);
                 intent.setAction("edit");
-                intent.putExtra("id", tr.getId() + "");
-                intent.putExtra("title",tr.getTitle());
-                intent.putExtra("desc",tr.getDesc());
-                intent.putExtra("dueTime",tr.getDueTime().getTimeInMillis());
-                intent.putExtra("recurring",tr.getRecurring());
+                Toast.makeText(mContext,"ID: "+tr.getId(),Toast.LENGTH_LONG).show();
+                intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID, Integer.toString(tr.getId()));
+                intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE,tr.getTitle());
+                intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC,tr.getDesc());
+                if(tr.getDueTime()!=null){
+                    intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME,tr.getDueTime().getTimeInMillis());
+                }
+                intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING,tr.getRecurring());
+                intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY,tr.getWeeklyDay());
+                intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME,tr.getWeeklyTime());
+                intent.putExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS,tr.getStatus());
                 startActivity(intent);
             }
         });

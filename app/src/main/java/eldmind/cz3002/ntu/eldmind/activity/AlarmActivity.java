@@ -15,9 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.Calendar;
+
 import eldmind.cz3002.ntu.eldmind.R;
 import eldmind.cz3002.ntu.eldmind.SQL.EldmindSQLiteHelper;
 import eldmind.cz3002.ntu.eldmind.SQL.TaskReminderDataSource;
+import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
+import eldmind.cz3002.ntu.eldmind.others.AlarmTask;
 
 public class AlarmActivity extends AppCompatActivity {
     Context mContext;
@@ -50,23 +54,37 @@ public class AlarmActivity extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        Log.d("alarm.secondActivity",i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE));
-        Log.d("alarm.secondActivity",i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC));
-        Log.d("alarm.secondActivity",i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING));
-        Log.d("alarm.secondActivity",i.getAction());
+        Log.d(TAG, "AlarmActivity id ==>" + i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID)+"\n"
+                +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE)+"\n"
+                +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC)+"\n"
+                +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING)+"\n"
+                +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY)+"\n"
+                +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME)+"\n"
+                +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS)+"\n");
 
         noti(this);
 
         if(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING).equals("SINGLE")) {
-            //TODO After alarm sound, prompt if task finished instead of delete
             String id = i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID);
-            //Toast.makeText(mContext, "My ID ==>" + id, Toast.LENGTH_SHORT).show();
             TaskReminderDataSource datasource = new TaskReminderDataSource(this);
             datasource.open();
             datasource.deleteTask(id);
             datasource.close();
-        }else{
-
+        }else{//weekly
+            TaskReminder tr = new TaskReminder();
+            tr.setId(Integer.parseInt(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID)));
+            tr.setTitle(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE));
+            tr.setDesc(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC));
+            tr.setRecurring(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING));
+            tr.setWeeklyDay(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY));
+            tr.setWeeklyTime(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME));
+            tr.setStatus(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS));
+            Calendar c = Calendar.getInstance();
+            if(i.getLongExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME,0)!=0){
+                c.setTimeInMillis(i.getLongExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME,0));
+            }
+            tr.setDueTime(c);
+            new AlarmTask(this, tr,true).run();
         }
     }
 

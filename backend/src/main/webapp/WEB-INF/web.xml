@@ -16,6 +16,14 @@
         <servlet-name>AddCustodian</servlet-name>
         <servlet-class>eldmind.cz3002.ntu.backend.AddCustodeeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddReminderTaskServlet</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.AddReminderTaskServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateReminderTaskServlet</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.UpdateReminderTaskServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>SendFCMExampleServlet</servlet-name>
@@ -32,6 +40,14 @@
     <servlet-mapping>
         <servlet-name>AddCustodian</servlet-name>
         <url-pattern>/addCustodian</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddReminderTaskServlet</servlet-name>
+        <url-pattern>/addTask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateReminderTaskServlet</servlet-name>
+        <url-pattern>/updateTask</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

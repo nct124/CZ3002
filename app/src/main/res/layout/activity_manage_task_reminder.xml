@@ -36,29 +36,104 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.99"/>
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date"
+            android:text="Recurring"
             />
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/Recurringbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/recurringItem"
+            >
+
+        </android.support.v7.widget.AppCompatSpinner>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/datePicker"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.99"
-                android:inputType="none" />
-            <Button
-                android:id="@+id/dateSetter"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:id="@+id/weekly">
+            <ToggleButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.01"
-                android:text="@string/set_button" />
+                android:textOn="Mo"
+                android:textOff="Mo"
+                android:id="@+id/weekly_monday"
+                android:layout_weight="0.14"/>
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="Tu"
+                android:textOff="Tu"
+                android:id="@+id/weekly_tuesday"
+                android:layout_weight="0.14"/>
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="We"
+                android:textOff="We"
+                android:id="@+id/weekly_wednesday"
+                android:layout_weight="0.14"/>
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="Th"
+                android:textOff="Th"
+                android:id="@+id/weekly_thursday"
+                android:layout_weight="0.14"/>
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="Fr"
+                android:textOff="Fr"
+                android:id="@+id/weekly_friday"
+                android:layout_weight="0.14"/>
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="Sa"
+                android:textOff="Sa"
+                android:id="@+id/weekly_saturday"
+                android:layout_weight="0.14"/>
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="Su"
+                android:textOff="Su"
+                android:id="@+id/weekly_sunday"
+                android:layout_weight="0.14"/>
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/single">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/datePicker"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.99"
+                    android:inputType="none" />
+                <Button
+                    android:id="@+id/dateSetter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.01"
+                    android:text="@string/set_button" />
+            </LinearLayout>
+        </LinearLayout>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -81,20 +156,6 @@
                 android:layout_weight="0.01"
                 android:text="@string/set_button" />
         </LinearLayout>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Recurring"
-            />
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/Recurringbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/recurringItem"
-            >
-
-        </android.support.v7.widget.AppCompatSpinner>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
