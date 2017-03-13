@@ -8,15 +8,14 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class Custodian_Elderly_Relation {
     @Id
-
     private String Id; //format: "custodianNum elderlyNum"
     private long custodianNum;//FK of User
     private long elderlyNum;//FK of User
     private String verifyCode;
     private String status; //PENDING OR CONFIRMED
-
+    public Custodian_Elderly_Relation(){}
     public Custodian_Elderly_Relation(String id, long custodianNum, long elderlyNum, String verifyCode, String status) {
-        Id = id;
+        this.Id = id;
         this.custodianNum = custodianNum;
         this.elderlyNum = elderlyNum;
         this.verifyCode = verifyCode;

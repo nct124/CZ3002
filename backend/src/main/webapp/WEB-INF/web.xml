@@ -13,8 +13,8 @@
         <servlet-class>eldmind.cz3002.ntu.backend.TrialServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddCustodian</servlet-name>
-        <servlet-class>eldmind.cz3002.ntu.backend.AddCustodeeServlet</servlet-class>
+        <servlet-name>AddElderlyServlet</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.AddElderlyServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddReminderTaskServlet</servlet-name>
@@ -24,7 +24,14 @@
         <servlet-name>UpdateReminderTaskServlet</servlet-name>
         <servlet-class>eldmind.cz3002.ntu.backend.UpdateReminderTaskServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>verifyCustodianServlet</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.verifyCustodianServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getTaskReminderTaskServlet</servlet-name>
+        <servlet-class>eldmind.cz3002.ntu.backend.getTaskReminderTaskServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendFCMExampleServlet</servlet-name>
         <url-pattern>/sendAll</url-pattern>
@@ -38,8 +45,8 @@
         <url-pattern>/trial</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddCustodian</servlet-name>
-        <url-pattern>/addCustodian</url-pattern>
+        <servlet-name>AddElderlyServlet</servlet-name>
+        <url-pattern>/addElderly</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddReminderTaskServlet</servlet-name>
@@ -48,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>UpdateReminderTaskServlet</servlet-name>
         <url-pattern>/updateTask</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>verifyCustodianServlet</servlet-name>
+        <url-pattern>/verifyCustodian</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getTaskReminderTaskServlet</servlet-name>
+        <url-pattern>/getTask</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
