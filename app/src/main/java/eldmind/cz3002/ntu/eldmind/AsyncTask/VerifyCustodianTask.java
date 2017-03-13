@@ -52,7 +52,7 @@ public class VerifyCustodianTask extends AsyncTask<Long, Integer, String> {
 
         try {
             JSONObject resp = new JSONObject(s);
-            if (resp.getBoolean("success")) {
+            if (resp.getBoolean("Success")) {
                 Toast.makeText(mActivity, resp.getString("msg"), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(mActivity, resp.getString("msg"), Toast.LENGTH_LONG).show();

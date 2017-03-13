@@ -22,7 +22,7 @@ import eldmind.cz3002.ntu.eldmind.R;
 
 public class AddElderlyTask extends AsyncTask<Long, Integer, String> {
     private static ProgressDialog dialog;
-    private Activity mActivity;
+    public Activity mActivity;
     public AddElderlyTask(Activity mActivity) {
         this.mActivity = mActivity;
     }

@@ -31,6 +31,8 @@ import eldmind.cz3002.ntu.eldmind.model.User;
 
 public class ListTaskReminderActivity extends AppCompatActivity {
     Context mContext;
+    ArrayAdapter adapter;
+    ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,14 +70,9 @@ public class ListTaskReminderActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        final ListView listview = (ListView)findViewById(R.id.ListTR);
+        listview = (ListView) findViewById(R.id.ListTR);
+        loadListView();
 
-        TaskReminderDataSource datasource = new TaskReminderDataSource(this);
-        datasource.open();
-        List<TaskReminder> list =  datasource.getAllTaskReminder();
-        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
-        listview.setAdapter(adapter);
-        datasource.close();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,13 +98,14 @@ public class ListTaskReminderActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.refresh:
-                Toast.makeText(mContext, "Refresh", Toast.LENGTH_SHORT).show();
+                loadListView();
+                Toast.makeText(mContext, "Refresh 1", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.addCustodee:
-                askPhoneNumber();
+                addCustodee();
                 return true;
             case R.id.verify:
-                verifyCode();
+                verifyCode("");
                 return true;
             case R.id.check_elderly:
                 Intent i = new Intent(this, ListElderlyActivity.class);
@@ -118,7 +116,16 @@ public class ListTaskReminderActivity extends AppCompatActivity {
         }
     }
 
-    private void verifyCode() {
+    private void loadListView() {
+        TaskReminderDataSource datasource = new TaskReminderDataSource(this);
+        datasource.open();
+        List<TaskReminder> list = datasource.getAllTaskReminder();
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
+        datasource.close();
+    }
+
+    public void verifyCode(String phoneNumber) {
         UserDataSource datasource = new UserDataSource(mContext);
         datasource.open();
         final List<User> list = datasource.getAllUser();
@@ -131,6 +138,7 @@ public class ListTaskReminderActivity extends AppCompatActivity {
                 alertDialogBuilder.setView(dialogView);
                 final EditText userInput_v_code = (EditText) dialogView.findViewById(R.id.editTextDialogUserInput_verify_code);
                 final EditText userInput_v_phone = (EditText) dialogView.findViewById(R.id.editTextDialogUserInput_verify_phoneNumber);
+                userInput_v_phone.setText(phoneNumber);
                 // set dialog message
                 alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -156,7 +164,7 @@ public class ListTaskReminderActivity extends AppCompatActivity {
         task.execute(yourPhoneNumber,elderlyPhoneNumber);
     }
 
-    private void askPhoneNumber() {
+    private void addCustodee() {
         UserDataSource datasource = new UserDataSource(mContext);
         datasource.open();
         final List<User> list = datasource.getAllUser();
@@ -173,6 +181,7 @@ public class ListTaskReminderActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         long phoneNumber = Long.parseLong(userInput.getText().toString());
                         addCustodian(list.get(0).getPhone(),phoneNumber);
+                        verifyCode(Long.toString(phoneNumber));
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
