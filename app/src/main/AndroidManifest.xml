@@ -46,7 +46,7 @@
 
         <activity
             android:name=".activity.ListTaskReminderActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ManageTaskReminderActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -58,9 +58,18 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.ListElderlyActivity" />
+        <activity
+            android:name=".activity.ListTaskReminderForCustodianActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ManageTaskReminderForCustodianActivity"
+            android:label="@string/title_activity_manage_task_reminder_for_custodian"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

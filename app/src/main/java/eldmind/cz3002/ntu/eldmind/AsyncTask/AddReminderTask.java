@@ -3,7 +3,6 @@ package eldmind.cz3002.ntu.eldmind.AsyncTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -17,7 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import eldmind.cz3002.ntu.eldmind.R;
-import eldmind.cz3002.ntu.eldmind.activity.ListTaskReminderActivity;
 import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 
 /**
@@ -27,10 +25,12 @@ import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 public class AddReminderTask extends AsyncTask<TaskReminder, Integer, String> {
     private static ProgressDialog dialog;
     private Activity mActivity;
-    private long phoneNumber;
-    public AddReminderTask(Activity mActivity,long phoneNumber) {
+    private long elderlyPhoneNumber;
+    private long custodianPhoneNumber;
+    public AddReminderTask(Activity mActivity,long elderlyPhoneNumber,long custodianPhoneNumber) {
         this.mActivity = mActivity;
-        this.phoneNumber = phoneNumber;
+        this.elderlyPhoneNumber = elderlyPhoneNumber;
+        this.custodianPhoneNumber = custodianPhoneNumber;
     }
 
     @Override
@@ -52,9 +52,6 @@ public class AddReminderTask extends AsyncTask<TaskReminder, Integer, String> {
         try {
             JSONObject resp = new JSONObject(s);
             if(resp.getBoolean("success")){
-                mActivity.finish();
-                Intent intent = new Intent(mActivity, ListTaskReminderActivity.class);
-                mActivity.startActivity(intent);
                 Toast.makeText(mActivity,"Create Task successfully",Toast.LENGTH_LONG).show();
                 mActivity.finish();
             }else{
@@ -85,7 +82,8 @@ public class AddReminderTask extends AsyncTask<TaskReminder, Integer, String> {
             urlConnection.setDoOutput(true);
 
             JSONObject inputJO = params[0].toJSON();
-            inputJO.put("phoneNumber",phoneNumber);
+            inputJO.put("phoneNumber",elderlyPhoneNumber);
+            inputJO.put("CphoneNumber",custodianPhoneNumber);
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
             String parameters = "data="+inputJO.toString();
             wr.write(parameters.getBytes());

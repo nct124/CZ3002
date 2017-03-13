@@ -15,50 +15,43 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import eldmind.cz3002.ntu.eldmind.R;
-import eldmind.cz3002.ntu.eldmind.SQL.EldmindSQLiteHelper;
 
 /**
- * Created by n on 11/3/2017.
+ * Created by n on 26/2/2017.
  */
 
-public class DeleteReminderTask extends AsyncTask<Integer, Integer, String> {
+public class AddElderlyTask extends AsyncTask<Long, Integer, String> {
     private static ProgressDialog dialog;
     private Activity mActivity;
-    private long elderlyPhoneNumber;
-    private long custodianPhoneNumber;
-    boolean alarm;
-    public DeleteReminderTask(Activity mActivity,long elderlyPhoneNumber,long custodianPhoneNumber,boolean alarm) {
+    public AddElderlyTask(Activity mActivity) {
         this.mActivity = mActivity;
-        this.elderlyPhoneNumber = elderlyPhoneNumber;
-        this.custodianPhoneNumber = custodianPhoneNumber;
-        this.alarm = alarm;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
         dialog = new ProgressDialog(mActivity);
         dialog.setMessage("Please Wait");
         dialog.show();
+
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if(mActivity.isDestroyed()==false){
+        if(mActivity.isDestroyed()==false) {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
         }
+
         try {
             JSONObject resp = new JSONObject(s);
             if(resp.getBoolean("success")){
-                if(!alarm){
-                    Toast.makeText(mActivity,"Delete Task successfully",Toast.LENGTH_LONG).show();
-                    mActivity.finish();
-                }
+                Toast.makeText(mActivity,resp.getString("msg"),Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(mActivity,"Delete Task unsuccessfully, "+resp.getString("msg"),Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity,resp.getString("msg"),Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -71,27 +64,25 @@ public class DeleteReminderTask extends AsyncTask<Integer, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(Integer ... params) {
+    protected String doInBackground(Long... params) {
+
         String url_text = mActivity.getResources().getString(R.string.gae_url);
-        String action = mActivity.getResources().getString(R.string.gae_updateTask_url);
+        String action = mActivity.getResources().getString(R.string.gae_addElderly_url);
         URL url;
         HttpURLConnection urlConnection = null;
         String resp = null;
         try {
-            url = new URL(url_text+action);
+            url = new URL(url_text + action);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
             JSONObject inputJO = new JSONObject();
-            inputJO.put("phoneNumber",elderlyPhoneNumber);
-            inputJO.put("CphoneNumber",custodianPhoneNumber);
-            inputJO.put(EldmindSQLiteHelper.COLUMN_TaskReminder_ID,params[0]);
-            inputJO.put(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS,"DISABLED");
-
+            inputJO.put("caregiver_phoneNumber", params[0]);
+            inputJO.put("elderly_phoneNumber", params[1]);
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            String parameters = "data="+inputJO.toString();
+            String parameters = "data=" + inputJO.toString();
             wr.write(parameters.getBytes());
 
             InputStream in = urlConnection.getInputStream();

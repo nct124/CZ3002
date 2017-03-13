@@ -8,15 +8,22 @@
     <string name="clear_button">Clear All</string>
     <string name="action_setttings">Meow</string>
     <string name="title_activity_second">SecondActivity</string>
-    <string name="gae_url">https://eldmind-d78f4.appspot.com</string>
+    <string name="gae_url">https://3-dot-eldmind-d78f4.appspot.com</string><!--<string name="gae_url">https://eldmind-d78f4.appspot.com</string>-->
     <string name="gae_addUser_url">/addUser</string>
     <string name="gae_addTask_url">/addTask</string>
+    <string name="gae_addElderly_url">/addElderly</string>
+    <string name="gae_verifyCustodian_url">/verifyCustodian</string>
+    <string name="gae_getTask_url">/getTask</string>
     <string name="gae_updateTask_url">/updateTask</string>
     <string name="logout">Log Out</string>
     <string name="refresh">Refresh</string>
     <string name="addCustodee">Add Custodee</string>
+    <string name="verifyCustodian">Verify Custodian</string>
     <string-array name="recurringItem">
         <item>Single</item>
         <item>Weekly</item>
     </string-array>
+    <string name="title_activity_manage_task_reminder_for_custodian">
+        ManageTaskReminderForCustodianActivity
+    </string>
 </resources>

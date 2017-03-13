@@ -14,13 +14,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.List;
 
+import eldmind.cz3002.ntu.eldmind.AsyncTask.DeleteReminderTask;
 import eldmind.cz3002.ntu.eldmind.R;
 import eldmind.cz3002.ntu.eldmind.SQL.EldmindSQLiteHelper;
 import eldmind.cz3002.ntu.eldmind.SQL.TaskReminderDataSource;
+import eldmind.cz3002.ntu.eldmind.SQL.UserDataSource;
 import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
+import eldmind.cz3002.ntu.eldmind.model.User;
 import eldmind.cz3002.ntu.eldmind.others.AlarmTask;
 
 public class AlarmActivity extends AppCompatActivity {
@@ -65,11 +70,19 @@ public class AlarmActivity extends AppCompatActivity {
         noti(this);
 
         if(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING).equals("SINGLE")) {
+            UserDataSource datasourceU = new UserDataSource(mContext);
+            datasourceU.open();
+            List<User> list = datasourceU.getAllUser();
+            datasourceU.close();
+
             String id = i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID);
             TaskReminderDataSource datasource = new TaskReminderDataSource(this);
             datasource.open();
             datasource.deleteTask(id);
             datasource.close();
+            Toast.makeText(this,"DELETED ID:"+id,Toast.LENGTH_LONG).show();
+            DeleteReminderTask task = new DeleteReminderTask(this,list.get(0).getPhone(),0,true);
+            task.execute(Integer.parseInt(id));
         }else{//weekly
             TaskReminder tr = new TaskReminder();
             tr.setId(Integer.parseInt(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID)));

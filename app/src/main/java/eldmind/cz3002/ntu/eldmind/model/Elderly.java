@@ -18,4 +18,8 @@ public class Elderly {
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String toString(){
+        return Integer.toString(phoneNumber);
+    }
 }
