@@ -7,19 +7,27 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter elderly's phone number : "
+        android:text="Enter verification code:"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/editTextDialogUserInput"
+        android:id="@+id/editTextDialogUserInput_verify_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <requestFocus/>
+    </EditText>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter phone number:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/editTextDialogUserInput_verify_phoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <requestFocus />
-
     </EditText>
-
 </LinearLayout>

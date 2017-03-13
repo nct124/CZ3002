@@ -9,7 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
+import android.util.Log;
 
 import java.util.Calendar;
 import java.util.List;
@@ -33,12 +33,25 @@ public class BootReceiver extends BroadcastReceiver {
         Calendar now = Calendar.getInstance();
         for(int i=0;i<list.size();i++){
             TaskReminder tr = list.get(i);
-            if(tr.getDueTime().getTimeInMillis()>now.getTimeInMillis()){
-                AlarmTask at = new AlarmTask(context,tr);
+            if(tr.getRecurring().equals("SINGLE")){
+                if(tr.getDueTime().getTimeInMillis()>now.getTimeInMillis()){
+                    Log.d("BOOT_RECEIVER","SINGLE: "+tr.getDueTime().getTime().toString());
+                    AlarmTask at = new AlarmTask(context,tr,true);
+                    at.run();
+                }
+            }else{//weekly
+                Log.d("BOOT_RECEIVER","WEEKLY: "+tr.getWeeklyDay()+" "+tr.getWeeklyTime());
+                new AlarmTask(context, tr,true).run();
+            }
+            /*if(tr.getDueTime().getTimeInMillis()>now.getTimeInMillis()){
+                Toast.makeText(context, tr.getDueTime().getTime().toString()+">"+now.getTime().toString(), Toast.LENGTH_SHORT).show();
+                Log.d("BOOTRECEIVER",tr.getDueTime().getTime().toString()+">"+now.getTime().toString());
+                AlarmTask at = new AlarmTask(context,tr,true);
                 at.run();
             }else{
                 if(tr.getRecurring().equals("SINGLE")){
-
+                    Toast.makeText(context, tr.getDueTime().getTime().toString()+"<"+now.getTime().toString(), Toast.LENGTH_SHORT).show();
+                    Log.d("BOOTRECEIVER",tr.getDueTime().getTime().toString()+"<"+now.getTime().toString());
                     //datasource.deleteTaskReminder(tr);
                     //Toast.makeText(context, "value of id ==> " + tr.getId(), Toast.LENGTH_SHORT).show();
                     datasource.deleteTask( Integer.toString(tr.getId()) );
@@ -46,7 +59,7 @@ public class BootReceiver extends BroadcastReceiver {
                 }else if(tr.getRecurring().equals("WEEKLY")){
                     tr.getDueTime().add(Calendar.DATE,7);
                 }
-            }
+            }*/
         }
         datasource.close();
     }

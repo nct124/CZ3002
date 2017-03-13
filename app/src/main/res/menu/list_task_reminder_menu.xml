@@ -17,7 +17,14 @@
         android:id="@+id/addCustodee"
         android:title="@string/addCustodee"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/verify"
+        android:title="@string/verifyCustodian"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/check_elderly"
+        android:title="Check Elderly Reminders"
+        app:showAsAction="never" />
     <item
         android:id="@+id/refresh"
         android:title="@string/refresh"

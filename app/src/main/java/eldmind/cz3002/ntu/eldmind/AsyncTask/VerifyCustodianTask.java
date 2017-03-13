@@ -3,7 +3,9 @@ package eldmind.cz3002.ntu.eldmind.AsyncTask;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataOutputStream;
@@ -13,23 +15,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import eldmind.cz3002.ntu.eldmind.R;
+import eldmind.cz3002.ntu.eldmind.SQL.ElderlyDataSource;
 
 /**
- * Created by n on 26/2/2017.
+ * Created by n on 11/3/2017.
  */
 
-public class AddCustodeeTask extends AsyncTask<String, Integer, String> {
+public class VerifyCustodianTask extends AsyncTask<Long, Integer, String> {
     private static ProgressDialog dialog;
     private Activity mActivity;
+    private String verifyCode;
 
-    /*
-        public RegisterUserTask(Context mContext) {
-
-            this.mContext = mContext;
-        }
-    */
-    public AddCustodeeTask(Activity mActivity) {
+    public VerifyCustodianTask(Activity mActivity,String verifyCode) {
         this.mActivity = mActivity;
+        this.verifyCode = verifyCode;
     }
 
     @Override
@@ -45,26 +44,22 @@ public class AddCustodeeTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-
-        if (dialog.isShowing()) {
-            dialog.dismiss();
+        if (mActivity.isDestroyed() == false) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
-/*
+
         try {
             JSONObject resp = new JSONObject(s);
-            if(resp.getBoolean("success")){
-                mActivity.finish();
-                Intent intent = new Intent(mActivity, ListTaskReminderActivity.class);
-                mActivity.startActivity(intent);
-                Toast.makeText(mActivity,"Registered successfully",Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(mActivity,"Registered unsuccessfully",Toast.LENGTH_LONG).show();
+            if (resp.getBoolean("success")) {
+                Toast.makeText(mActivity, resp.getString("msg"), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(mActivity, resp.getString("msg"), Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-*/
-
     }
 
     @Override
@@ -73,10 +68,9 @@ public class AddCustodeeTask extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
-
+    protected String doInBackground(Long... params) {
         String url_text = mActivity.getResources().getString(R.string.gae_url);
-        String action = "/addCustodian";
+        String action = mActivity.getResources().getString(R.string.gae_verifyCustodian_url);
         URL url;
         HttpURLConnection urlConnection = null;
         String resp = null;
@@ -87,10 +81,10 @@ public class AddCustodeeTask extends AsyncTask<String, Integer, String> {
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
-
             JSONObject inputJO = new JSONObject();
-            inputJO.put("phoneNumber", params[0]); //TODO remove hardcode
-
+            inputJO.put("caregiver_phoneNumber", params[0]);
+            inputJO.put("elderly_phoneNumber", params[1]);
+            inputJO.put("verify_code", verifyCode);
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
             String parameters = "data=" + inputJO.toString();
             wr.write(parameters.getBytes());
@@ -105,6 +99,14 @@ public class AddCustodeeTask extends AsyncTask<String, Integer, String> {
                 sb.append(current);
             }
             resp = sb.toString();
+            JSONObject respJO = new JSONObject(resp);
+            if (respJO.getBoolean("success")) {
+                ElderlyDataSource datasource = new ElderlyDataSource(mActivity);
+                datasource.open();
+                int phone = params[1].intValue();
+                datasource.createElderly(phone);
+                datasource.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

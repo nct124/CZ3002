@@ -62,7 +62,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AddCustodian"></activity>
+        <activity android:name=".activity.ListElderlyActivity" />
+        <activity
+            android:name=".activity.ListTaskReminderForCustodianActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ManageTaskReminderForCustodianActivity"
+            android:label="@string/title_activity_manage_task_reminder_for_custodian"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

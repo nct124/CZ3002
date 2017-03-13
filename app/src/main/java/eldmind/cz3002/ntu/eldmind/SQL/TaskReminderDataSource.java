@@ -45,7 +45,9 @@ public class TaskReminderDataSource {
         ContentValues values = new ContentValues();
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE, tr.getTitle());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
-        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, tr.getDueTime().getTimeInMillis());
+        if(tr.getDueTime()!=null){
+            values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, tr.getDueTime().getTimeInMillis());
+        }
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING, tr.getRecurring());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY, tr.getWeeklyDay());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME, tr.getWeeklyTime());
@@ -65,7 +67,9 @@ public class TaskReminderDataSource {
         ContentValues values = new ContentValues();
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE, tr.getTitle());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC, tr.getDesc());
-        values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, tr.getDueTime().getTimeInMillis());
+        if(tr.getDueTime()!=null){
+            values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_DUETIME, tr.getDueTime().getTimeInMillis());
+        }
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING, tr.getRecurring());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYDAY, tr.getWeeklyDay());
         values.put(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME, tr.getWeeklyTime());

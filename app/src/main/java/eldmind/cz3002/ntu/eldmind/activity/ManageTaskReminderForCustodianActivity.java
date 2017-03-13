@@ -33,16 +33,20 @@ import eldmind.cz3002.ntu.eldmind.model.TaskReminder;
 import eldmind.cz3002.ntu.eldmind.model.User;
 import eldmind.cz3002.ntu.eldmind.others.ScheduleClient;
 
+import static android.R.attr.id;
 import static eldmind.cz3002.ntu.eldmind.R.id.weekly;
 
-public class ManageTaskReminderActivity extends AppCompatActivity {
+public class ManageTaskReminderForCustodianActivity extends AppCompatActivity {
     Activity a;
     Context mContext;
     ScheduleClient sc;
     Calendar c1;
+    int elderlyPhone;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_task_reminder);
+        setContentView(R.layout.activity_manage_task_reminder_for_custodian);
         mContext = this;
         a = this;
         sc = new ScheduleClient(mContext);
@@ -64,6 +68,7 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
 
         if(getIntent()!=null){
             Intent intent = getIntent();
+            elderlyPhone = intent.getIntExtra("elderly_phoneNumber",0);
             if(intent.getAction().equals("edit")){ //Set old values back to form
                 titleBox.setText(intent.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE));
                 descBox.setText(intent.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC));
@@ -172,6 +177,7 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                     datasource.open();
                     List<User> list = datasource.getAllUser();
                     datasource.close();
+                    int custodianPhoneNum = list.get(0).getPhone();
 
                     TaskReminder tr = new TaskReminder();
                     tr.setTitle(titleBox.getText().toString());
@@ -192,34 +198,35 @@ public class ManageTaskReminderActivity extends AppCompatActivity {
                     if (getIntent().getAction().equals("edit")) { //Update Task
                         String oldId = getIntent().getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID);
                         tr.setId(Integer.parseInt(oldId));
-                        Log.d(TAG, "onClick: updateTask id == " + oldId);
-                        sc.updateTask(tr);
-                        UpdateReminderTask task = new UpdateReminderTask(a,list.get(0).getPhone(),0);
+                        Log.d(TAG, "onClick: updateTask for Custodian id == " + oldId);
+                        UpdateReminderTask task = new UpdateReminderTask(a,elderlyPhone,custodianPhoneNum);
                         task.execute(tr);
                     } else { //Create New Task
-                        int id = sc.createTask(tr);
-                        AddReminderTask task = new AddReminderTask(a,list.get(0).getPhone(),0);
+                        tr.setId(-1);
+                        AddReminderTask task = new AddReminderTask(a,elderlyPhone,custodianPhoneNum);
                         task.execute(tr);
-                        Log.d(TAG, "onClick: createTask id == " + id);
+                        Log.d(TAG, "onClick: createTask for Custodian id == " + id);
                     }
                 }
             }
         });
-
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getIntent().getAction().equals("edit")){
+
+
                     UserDataSource datasource = new UserDataSource(mContext);
                     datasource.open();
                     List<User> list = datasource.getAllUser();
                     datasource.close();
+                    int custodianPhoneNum = list.get(0).getPhone();
 
                     //Only if it is updating previous value then delete otherwise do nothing.
                     String oldId = getIntent().getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID);
                     sc.deleteTask(oldId); //Delete Task and Alarm
                     Integer oldIdIn = new Integer(oldId);
-                    DeleteReminderTask task = new DeleteReminderTask(a,list.get(0).getPhone(),0,false);
+                    DeleteReminderTask task = new DeleteReminderTask(a,elderlyPhone,custodianPhoneNum,false);
                     task.execute(oldIdIn);
                 }else {
                     Toast.makeText(mContext, "Task Canceled", Toast.LENGTH_SHORT).show();

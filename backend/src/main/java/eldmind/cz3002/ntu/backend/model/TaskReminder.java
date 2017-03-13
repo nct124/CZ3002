@@ -2,14 +2,20 @@ package eldmind.cz3002.ntu.backend.model;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by n on 7/3/2017.
  */
 @Entity
 public class TaskReminder {
+    @Index
     @Id
     private String Id; //format: "phoneNum *IdGeneratedInAndroid*"
+    @Index
     private long phoneNum; //FK of User
     private String title;
     private String desc;
@@ -17,6 +23,7 @@ public class TaskReminder {
     private long dueTime; //FOR SINGLE
     private String weeklyDay; //FOR WEEKLY eg "MONDAY,SATURDAY,SUNDAY"
     private String weeklyTime; //FOR WEEKLY eg "23:00"
+    @Index
     private String status; // ENABLED,DISABLED
 
     public String getId() {
@@ -89,5 +96,21 @@ public class TaskReminder {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public JSONObject toJSON(){
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("_id",Integer.parseInt(Id.split(" ")[1]));
+            jo.put("title",title);
+            jo.put("desc",desc);
+            jo.put("recurring",reccurring);
+            jo.put("dueTime",dueTime);
+            jo.put("weeklyDay",weeklyDay);
+            jo.put("weeklyTime",weeklyTime);
+            jo.put("status",status);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jo;
     }
 }
