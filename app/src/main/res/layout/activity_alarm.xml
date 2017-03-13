@@ -19,11 +19,48 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:title="@string/list_title"></android.support.v7.widget.Toolbar>
+
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WAKE UP"
-        android:textAlignment="center" />
+        android:text="Task title:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+
+        />
+
+    <TextView
+        android:id="@+id/alarmTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Should be Generated"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="30dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task Description:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/alarmDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Should be generated lo:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="30dp" />
+
     <Button
         android:id="@+id/stopAlarmButton"
         android:layout_width="match_parent"

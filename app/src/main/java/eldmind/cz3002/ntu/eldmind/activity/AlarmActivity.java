@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -29,8 +30,8 @@ import eldmind.cz3002.ntu.eldmind.model.User;
 import eldmind.cz3002.ntu.eldmind.others.AlarmTask;
 
 public class AlarmActivity extends AppCompatActivity {
-    Context mContext;
     final String TAG = "AlarmActivity";
+    Context mContext;
     Ringtone r;
 
     @Override
@@ -39,12 +40,13 @@ public class AlarmActivity extends AppCompatActivity {
         Log.d("alarm.secondActivity","alarm~~");
         mContext = this;
         setContentView(R.layout.activity_alarm);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setTitle("Alarm");
         myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
         setSupportActionBar(myToolbar);
-        Button stopbutton = (Button)findViewById(R.id.stopAlarmButton);
-        stopbutton.setOnClickListener(new View.OnClickListener() {
+        Button stopButton = (Button) findViewById(R.id.stopAlarmButton);
+        stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 r.stop();
@@ -58,7 +60,6 @@ public class AlarmActivity extends AppCompatActivity {
 
 
         Intent i = getIntent();
-
         Log.d(TAG, "AlarmActivity id ==>" + i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_ID)+"\n"
                 +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE)+"\n"
                 +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC)+"\n"
@@ -67,7 +68,15 @@ public class AlarmActivity extends AppCompatActivity {
                 +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_WEEKLYTIME)+"\n"
                 +i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_STATUS)+"\n");
 
-        noti(this);
+        String alarmTitleText = i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_TITLE);
+        String alarmDescriptionText = i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_DESC);
+
+        TextView alarmTitle = (TextView) findViewById(R.id.alarmTitle);
+        alarmTitle.setText(alarmTitleText);
+        TextView alarmDescription = (TextView) findViewById(R.id.alarmDescription);
+        alarmDescription.setText(alarmDescriptionText);
+
+        noti(this);//createNotification
 
         if(i.getStringExtra(EldmindSQLiteHelper.COLUMN_TaskReminder_RECURRING).equals("SINGLE")) {
             UserDataSource datasourceU = new UserDataSource(mContext);
